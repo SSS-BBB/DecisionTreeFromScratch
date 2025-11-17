@@ -30,4 +30,6 @@ public:
 	void AddData(list<int> &iData, list<float> &fData, list<char> &cData, list<string> &sData); // Add Data From List
 	void AddData(Data &data); // Add Data From Data Class
 	void PrintDataList();
+
+	void ReadCSV(string filePath, string columnsType);
 };

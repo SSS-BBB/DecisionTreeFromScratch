@@ -1,5 +1,7 @@
 #include "DataList.h"
 #include <iostream>
+#include <fstream>
+#include "Utils.h"
 
 DataList::DataList(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatureNum, int p_rowNum)
 {
@@ -109,4 +111,105 @@ void DataList::PrintDataList()
 	{
 		dataArray[i].PrintData();
 	}
+}
+
+void DataList::ReadCSV(string filePath, string columnsType)
+{
+	// Columns Type to let the program knows which type is this column
+	// Ex. ifcs -> first column is integer, second is float, third is char, last is string
+
+	// check if number of each type is equal to the column number
+	int iCount = 0;
+	int fCount = 0;
+	int cCount = 0;
+	int sCount = 0;
+
+	for (char type : columnsType)
+	{
+		switch (type)
+		{
+		case 'i':
+			iCount++;
+			break;
+		case 'f':
+			fCount++;
+			break;
+		case 'c':
+			cCount++;
+			break;
+		case 's':
+			sCount++;
+			break;
+
+		default:
+			break;
+		}
+	}
+
+	if (iCount != iColumnNum || fCount != fColumnNum || cCount != cColumnNum || sCount != sColumnNum)
+	{
+		cout << "Some/All column type is not equal to the given size of the columns." << endl;
+		return;
+	}
+
+	ifstream dataFile;
+	string line = "";
+	dataFile.open(filePath);
+	getline(dataFile, line);
+
+	// check if counted columns is equal to data list column num
+	if (Utils::CountChar(line, ',') + 1 != GetColumnNum())
+	{
+		cout << "Number of columns from the file is not equal to number of columns from this data list." << endl;
+		return;
+	}
+
+	// add data
+	for (int row = 0; row < rowNum; row++)
+	{
+		getline(dataFile, line);
+
+		if (line.empty())
+		{
+			cout << "Got all the data." << endl;
+			return;
+		}
+
+		// add a row
+		Data data(iColumnNum, fColumnNum, cColumnNum, sColumnNum);
+		for (int i = 0; i < GetColumnNum(); i++)
+		{
+			// get cell
+			int delimiterLocation = line.find(',');
+
+			string currentCell = line.substr(0, delimiterLocation);
+			line = line.substr(delimiterLocation + 1, line.length());
+
+			// add data to a row
+			char currentType = columnsType[i];
+
+			switch (currentType)
+			{
+			case 'i':
+				data.InsertInt(stoi(currentCell));
+				break;
+			case 'f':
+				data.InsertFloat(stof(currentCell));
+				break;
+			case 'c':
+				data.InsertChar(currentCell[0]);
+				break;
+			case 's':
+				data.InsertString(currentCell);
+				break;
+
+			default:
+				cout << "The program doesn't know data type" + currentType << endl;
+				break;
+			}
+		}
+		AddData(data);
+		cout << row + 1 << "/" << rowNum << endl;
+	}
+	
 }

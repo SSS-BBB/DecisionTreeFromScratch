@@ -1,4 +1,3 @@
-﻿  Main.cpp
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(13,20): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(14,20): warning C4305: 'argument': truncation from 'double' to 'float'
+﻿  DataList.cpp
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataList.cpp(183,26): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   MyDecisionTree.vcxproj -> C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\x64\Debug\MyDecisionTree.exe
