@@ -1,2 +1,4 @@
-﻿  Data.cpp
+﻿  Main.cpp
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(13,20): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(14,20): warning C4305: 'argument': truncation from 'double' to 'float'
   MyDecisionTree.vcxproj -> C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\x64\Debug\MyDecisionTree.exe

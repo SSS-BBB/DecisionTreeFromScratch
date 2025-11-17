@@ -22,6 +22,11 @@ Data::Data(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatu
 	rearIndexString = -1;
 }
 
+Data::Data()
+{
+	Data::Data(0, 0, 0, 0);
+}
+
 void Data::InsertInt(int data)
 {
 	if (rearIndexInt >= iFeatureNum - 1)
@@ -72,31 +77,32 @@ void Data::InsertString(string data)
 
 void Data::PrintData()
 {
-	cout << "Integer Data:" << endl;
+	// cout << "Integer Data:" << endl;
 	for (int i = 0; i <= rearIndexInt; i++)
 	{
 		cout << iFeatureArray[i] << ", ";
 	}
-	cout << "\n----------------\n";
+	// cout << "\n----------------\n";
 
-	cout << "Float Data:" << endl;
+	// cout << "Float Data:" << endl;
 	for (int i = 0; i <= rearIndexFloat; i++)
 	{
 		cout << fFeatureArray[i] << ", ";
 	}
-	cout << "\n----------------\n";
+	// cout << "\n----------------\n";
 
-	cout << "Character Data:" << endl;
+	// cout << "Character Data:" << endl;
 	for (int i = 0; i <= rearIndexChar; i++)
 	{
 		cout << cFeatureArray[i] << ", ";
 	}
-	cout << "\n----------------\n";
+	// cout << "\n----------------\n";
 
-	cout << "String Data:" << endl;
+	// cout << "String Data:" << endl;
 	for (int i = 0; i <= rearIndexString; i++)
 	{
 		cout << sFeatureArray[i] << ", ";
 	}
-	cout << "\n----------------\n";
+	// cout << "\n----------------\n";
+	cout << "\n";
 }
