@@ -1,2 +1,6 @@
-﻿  Data.cpp
+﻿  DataList.cpp
+  Main.cpp
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataList.cpp(155,26): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(79,20): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
+  Generating Code...
   MyDecisionTree.vcxproj -> C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\x64\Debug\MyDecisionTree.exe
