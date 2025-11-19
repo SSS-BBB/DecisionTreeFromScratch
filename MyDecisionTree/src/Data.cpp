@@ -10,10 +10,10 @@ Data::Data(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatu
 	sFeatureNum = p_sFeatureNum;
 
 	// Initialize features array
-	iFeatureArray = new int[iFeatureNum];
-	fFeatureArray = new float[fFeatureNum];
-	cFeatureArray = new char[cFeatureNum];
-	sFeatureArray = new string[sFeatureNum];
+	iFeatureArray.reserve(iFeatureNum);
+	fFeatureArray.reserve(fFeatureNum);
+	cFeatureArray.reserve(cFeatureNum);
+	sFeatureArray.reserve(sFeatureNum);
 
 	// Initialize rear indexes
 	rearIndexInt = -1;
@@ -22,13 +22,9 @@ Data::Data(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatu
 	rearIndexString = -1;
 }
 
-Data::Data()
-{
-	Data::Data(0, 0, 0, 0);
-}
-
 void Data::InsertInt(int data)
 {
+
 	if (rearIndexInt >= iFeatureNum - 1)
 	{
 		cout << "Integer array is full, unable to insert " << data << endl;
@@ -36,11 +32,12 @@ void Data::InsertInt(int data)
 	}
 
 	rearIndexInt++;
-	iFeatureArray[rearIndexInt] = data;
+	iFeatureArray.push_back(data);
 }
 
 void Data::InsertFloat(float data)
 {
+
 	if (rearIndexFloat >= fFeatureNum - 1)
 	{
 		cout << "Float array is full, unable to insert " << data << endl;
@@ -48,11 +45,12 @@ void Data::InsertFloat(float data)
 	}
 
 	rearIndexFloat++;
-	fFeatureArray[rearIndexFloat] = data;
+	fFeatureArray.push_back(data);
 }
 
 void Data::InsertChar(char data)
 {
+
 	if (rearIndexChar >= cFeatureNum - 1)
 	{
 		cout << "Char array is full, unable to insert " << data << endl;
@@ -60,11 +58,12 @@ void Data::InsertChar(char data)
 	}
 
 	rearIndexChar++;
-	cFeatureArray[rearIndexChar] = data;
+	cFeatureArray.push_back(data);
 }
 
 void Data::InsertString(string data)
 {
+
 	if (rearIndexString >= sFeatureNum - 1)
 	{
 		cout << "String array is full, unable to insert " << data << endl;
@@ -72,11 +71,12 @@ void Data::InsertString(string data)
 	}
 
 	rearIndexString++;
-	sFeatureArray[rearIndexString] = data;
+	sFeatureArray.push_back(data);
 }
 
 void Data::PrintData()
 {
+
 	// cout << "Integer Data:" << endl;
 	for (int i = 0; i <= rearIndexInt; i++)
 	{
@@ -105,4 +105,24 @@ void Data::PrintData()
 	}
 	// cout << "\n----------------\n";
 	cout << "\n";
+}
+
+int Data::GetIFeatureNum()
+{
+	return iFeatureNum;
+}
+
+int Data::GetFFeatureNum()
+{
+	return fFeatureNum;
+}
+
+int Data::GetCFeatureNum()
+{
+	return cFeatureNum;
+}
+
+int Data::GetSFeatureNum()
+{
+	return sFeatureNum;
 }

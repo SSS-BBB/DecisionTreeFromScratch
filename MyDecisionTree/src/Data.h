@@ -1,31 +1,32 @@
 #pragma once
 #include <string>
+#include <vector>
 
 using namespace std;
 
 class Data
 {
 private:
-	// last index of each datatypes
-	int rearIndexInt;
-	int rearIndexFloat;
-	int rearIndexChar;
-	int rearIndexString;
-
-public:
 	// number of features for each data types
 	int iFeatureNum;
 	int fFeatureNum;
 	int cFeatureNum;
 	int sFeatureNum;
 
-	int* iFeatureArray;
-	float* fFeatureArray;
-	char* cFeatureArray;
-	string* sFeatureArray;
+	// last index of each datatypes
+	int rearIndexInt;
+	int rearIndexFloat;
+	int rearIndexChar;
+	int rearIndexString;
 
-	Data(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatureNum);
-	Data();
+	// array of the features
+	vector<int> iFeatureArray;
+	vector<float> fFeatureArray;
+	vector<char> cFeatureArray;
+	vector<string> sFeatureArray;
+
+public:
+	Data(int p_iFeatureNum = 0, int p_fFeatureNum = 0, int p_cFeatureNum = 0, int p_sFeatureNum = 0);
 
 	// Insert Datas
 	void InsertInt(int data);
@@ -35,4 +36,10 @@ public:
 
 	// Show Datas
 	void PrintData();
+
+	// Getter
+	int GetIFeatureNum();
+	int GetFFeatureNum();
+	int GetCFeatureNum();
+	int GetSFeatureNum();
 };
