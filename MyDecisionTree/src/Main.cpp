@@ -71,12 +71,11 @@ int main()
 	DataList csvData(3, 0, 5, 1, 1000);
 
 	// cisciccic
-	time_t start = time(NULL);
+	clock_t start = clock();
 	csvData.ReadCSV("./data/Employee.csv", "cisciccic");
 	csvData.PrintDataList();
-	time_t end = time(NULL);
-	int measured_time = difftime(end, start);
-	cout << "Time: " << measured_time << end;
+	clock_t duration = clock() - start;
+	cout << "Time: " << (float)duration / CLOCKS_PER_SEC << " seconds" << endl;
 	
 
 	return 0;
