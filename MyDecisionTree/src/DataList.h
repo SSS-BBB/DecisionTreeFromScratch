@@ -1,6 +1,6 @@
 #pragma once
 #include "Data.h"
-#include <list>
+#include <vector>
 
 using namespace std;
 
@@ -20,14 +20,13 @@ private:
 	int rearRowIndex;
 
 public:
-	Data* dataArray;
+	vector<Data> dataArray;
 
 	DataList(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatureNum, int p_rowNum);
 
 	int GetColumnNum();
 	int GetRowNum();
 
-	void AddData(list<int> &iData, list<float> &fData, list<char> &cData, list<string> &sData); // Add Data From List
 	void AddData(Data &data); // Add Data From Data Class
 	void PrintDataList();
 

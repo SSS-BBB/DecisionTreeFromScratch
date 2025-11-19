@@ -1,4 +1,5 @@
 #include <iostream>
+#include <ctime>
 #include "Data.h"
 #include "DataList.h"
 
@@ -75,8 +76,7 @@ int main()
 	csvData.ReadCSV("./data/Employee.csv", "cisciccic");
 	csvData.PrintDataList();
 	clock_t duration = clock() - start;
-	cout << "Time: " << (float)duration / CLOCKS_PER_SEC << " seconds" << endl;
-	
+	cout << "Time: " << (float) duration / CLOCKS_PER_SEC << " seconds" << endl;
 
 	return 0;
 }

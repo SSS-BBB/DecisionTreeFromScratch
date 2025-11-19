@@ -15,8 +15,17 @@ DataList::DataList(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int 
 	rowNum = p_rowNum;
 	rearRowIndex = -1;
 
-	// Initialize data array
-	dataArray = new Data[rowNum];
+	// Initialize data array with size
+	dataArray.reserve(rowNum);
+	
+	//for (int i = 0; i < rowNum; i++)
+	//{
+	//	Data element(iColumnNum, fColumnNum, cColumnNum, sColumnNum);
+	//	dataArray.emplace_back(element);
+
+	//	dataArray[i] = Data();
+	//	// Note: be careful of stack overflow
+	//}
 }
 
 int DataList::GetColumnNum()
@@ -29,51 +38,15 @@ int DataList::GetRowNum()
 	return rowNum;
 }
 
-void DataList::AddData(list<int>& iData, list<float>& fData, list<char>& cData, list<string>& sData)
-{
-	if (rearRowIndex >= rowNum - 1)
-	{
-		cout << "Data List is full, unable to add more data." << endl;
-		return;
-	}
-
-	// check if passed data is valid -> size of the list is equal to the given size
-	if (iData.size() != iColumnNum || fData.size() != fColumnNum ||
-		cData.size() != cColumnNum || sData.size() != sColumnNum)
-	{
-		cout << "Size of the list is not equal to the given size of the columns." << endl;
-		return;
-	}
-		
-	rearRowIndex++;
-
-	// add int data
-	for (int x : iData)
-	{
-		dataArray[rearRowIndex].InsertInt(x);
-	}
-
-	// add float data
-	for (float x : fData)
-	{
-		dataArray[rearRowIndex].InsertFloat(x);
-	}
-
-	// add char data
-	for (char x : cData)
-	{
-		dataArray[rearRowIndex].InsertChar(x);
-	}
-
-	// add string data
-	for (string x : sData)
-	{
-		dataArray[rearRowIndex].InsertString(x);
-	}
-}
-
 void DataList::AddData(Data& data)
 {
+	/*if (dataArray == nullptr)
+	{
+		cout << "Data Array is nullptr, unable to add this data." << endl;
+		data.PrintData();
+		return;
+	}*/
+
 	if (rearRowIndex >= rowNum - 1)
 	{
 		cout << "Data List is full, unable to add more data." << endl;
@@ -84,8 +57,8 @@ void DataList::AddData(Data& data)
 	}
 
 	// check if passed data is valid -> size of the data is equal to the given size
-	if (data.iFeatureNum != iColumnNum || data.fFeatureNum != fColumnNum ||
-		data.cFeatureNum != cColumnNum || data.sFeatureNum != sColumnNum)
+	if (data.GetIFeatureNum() != iColumnNum || data.GetFFeatureNum() != fColumnNum ||
+		data.GetCFeatureNum() != cColumnNum || data.GetSFeatureNum() != sColumnNum)
 	{
 		cout << "Size of the data is not equal to the given size of the columns." << endl;
 		data.PrintData();
@@ -95,11 +68,17 @@ void DataList::AddData(Data& data)
 	}
 
 	rearRowIndex++;
-	dataArray[rearRowIndex] = data;
+	dataArray.emplace_back(data);
 }
 
 void DataList::PrintDataList()
 {
+	/*if (dataArray == nullptr)
+	{
+		cout << "Data Array is nullptr, unable to print data list." << endl;
+		return;
+	}*/
+
 	for (int i = 0; i <= rearRowIndex; i++)
 	{
 		dataArray[i].PrintData();
