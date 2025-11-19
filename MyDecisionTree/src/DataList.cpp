@@ -17,13 +17,6 @@ DataList::DataList(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int 
 
 	// Initialize data array
 	dataArray = new Data[rowNum];
-	for (int i = 0; i < rowNum; i++)
-	{
-		dataArray[i].iFeatureNum = iColumnNum;
-		dataArray[i].fFeatureNum = fColumnNum;
-		dataArray[i].cFeatureNum = cColumnNum;
-		dataArray[i].sFeatureNum = sColumnNum;
-	}
 }
 
 int DataList::GetColumnNum()
