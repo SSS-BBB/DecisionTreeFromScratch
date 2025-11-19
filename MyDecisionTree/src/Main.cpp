@@ -69,10 +69,10 @@ int main()
 	//dataList.AddData(good);
 
 	// Read CSV Test
+	clock_t start = clock();
 	DataList csvData(3, 0, 5, 1, 1000);
 
 	// cisciccic
-	clock_t start = clock();
 	csvData.ReadCSV("./data/Employee.csv", "cisciccic");
 	csvData.PrintDataList();
 	clock_t duration = clock() - start;
