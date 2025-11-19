@@ -1,7 +1,7 @@
 #include "DataList.h"
 #include <iostream>
 #include <fstream>
-#include "Utils.h"
+#include "../../Utils/Utils.h"
 
 DataList::DataList(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatureNum, int p_rowNum)
 {

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <ctime>
-#include "Data.h"
-#include "DataList.h"
+#include "DataClasses/Data/Data.h"
+#include "DataClasses/DataList/DataList.h"
 
 using namespace std;
 
