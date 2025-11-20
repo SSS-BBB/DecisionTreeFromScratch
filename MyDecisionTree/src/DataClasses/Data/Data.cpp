@@ -27,7 +27,7 @@ void Data::InsertInt(int data)
 
 	if (rearIndexInt >= iFeatureNum - 1)
 	{
-		cout << "Integer array is full, unable to insert " << data << endl;
+		cerr << "Integer array is full, unable to insert " << data << endl;
 		return;
 	}
 
@@ -40,7 +40,7 @@ void Data::InsertFloat(float data)
 
 	if (rearIndexFloat >= fFeatureNum - 1)
 	{
-		cout << "Float array is full, unable to insert " << data << endl;
+		cerr << "Float array is full, unable to insert " << data << endl;
 		return;
 	}
 
@@ -53,7 +53,7 @@ void Data::InsertChar(char data)
 
 	if (rearIndexChar >= cFeatureNum - 1)
 	{
-		cout << "Char array is full, unable to insert " << data << endl;
+		cerr << "Char array is full, unable to insert " << data << endl;
 		return;
 	}
 
@@ -66,7 +66,7 @@ void Data::InsertString(string data)
 
 	if (rearIndexString >= sFeatureNum - 1)
 	{
-		cout << "String array is full, unable to insert " << data << endl;
+		cerr << "String array is full, unable to insert " << data << endl;
 		return;
 	}
 
@@ -125,4 +125,47 @@ int Data::GetCFeatureNum()
 int Data::GetSFeatureNum()
 {
 	return sFeatureNum;
+}
+
+int Data::GetIData(int index)
+{
+	if (index >= iFeatureNum)
+	{
+		cerr << "index out of bounds" << endl;
+		return 0;
+	}
+
+	return iFeatureArray[index];
+}
+
+float Data::GetFData(int index)
+{
+	if (index >= fFeatureNum)
+	{
+		cerr << "index out of bounds" << endl;
+		return 0.0f;
+	}
+
+	return fFeatureArray[index];
+}
+
+char Data::GetCData(int index)
+{
+	if (index >= cFeatureNum)
+	{
+		cerr << "index out of bounds" << endl;
+		return 0;
+	}
+	return cFeatureArray[index];
+}
+
+string Data::GetSData(int index)
+{
+	if (index >= sFeatureNum)
+	{
+		cerr << "index out of bounds" << endl;
+		return "";
+	}
+
+	return sFeatureArray[index];
 }

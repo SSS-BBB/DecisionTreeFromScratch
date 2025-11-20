@@ -31,4 +31,6 @@ public:
 	void PrintDataList();
 
 	void ReadCSV(string filePath, string columnsType);
+
+	Data& GetDataAt(int index);
 };

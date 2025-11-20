@@ -42,4 +42,10 @@ public:
 	int GetFFeatureNum();
 	int GetCFeatureNum();
 	int GetSFeatureNum();
+
+	// Get Data
+	int GetIData(int index);
+	float GetFData(int index);
+	char GetCData(int index);
+	string GetSData(int index);
 };

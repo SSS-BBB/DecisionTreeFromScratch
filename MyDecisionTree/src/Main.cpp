@@ -2,6 +2,7 @@
 #include <ctime>
 #include "DataClasses/Data/Data.h"
 #include "DataClasses/DataList/DataList.h"
+#include "TreeClasses/Node/Node.h"
 
 using namespace std;
 
@@ -77,6 +78,44 @@ int main()
 	csvData.PrintDataList();
 	clock_t duration = clock() - start;
 	cout << "Time: " << (float) duration / CLOCKS_PER_SEC << " seconds" << endl;
+
+	// create a simple tree
+	Node root('c', 2); // gender
+	root.SetCTreshold('M');
+
+	Node a1('i', 1); // age
+	a1.SetITreshold(30);
+	Node a2('s', 0); // city
+	a2.SetSTreshold("Bangalore");
+
+	Node b1;
+	b1.SetCTreshold('0');
+	Node b2;
+	b2.SetCTreshold('1');
+	Node b3;
+	b3.SetCTreshold('0');
+	Node b4;
+	b4.SetCTreshold('1');
+
+	root.SetLeftNode(a1);
+	root.SetRightNode(a2);
+
+	a1.SetLeftNode(b1);
+	a1.SetRightNode(b2);
+	a2.SetLeftNode(b3);
+	a2.SetRightNode(b4);
+
+	// pass data to the tree
+	Data data = csvData.GetDataAt(3);
+	data.PrintData();
+	Node currentNode = root;
+	while (!currentNode.IsLeafNode())
+	{
+		currentNode.PrintNode();
+		currentNode = currentNode.NextNode(data);
+	}
+	// print leaf node
+	currentNode.PrintNode();
 
 	return 0;
 }

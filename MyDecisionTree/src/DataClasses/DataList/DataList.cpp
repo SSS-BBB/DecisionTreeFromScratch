@@ -49,10 +49,10 @@ void DataList::AddData(Data& data)
 
 	if (rearRowIndex >= rowNum - 1)
 	{
-		cout << "Data List is full, unable to add more data." << endl;
+		cerr << "Data List is full, unable to add more data." << endl;
 		data.PrintData();
-		cout << "Unable to add this data" << endl;
-		cout << "-------------------------" << endl;
+		cerr << "Unable to add this data" << endl;
+		cerr << "-------------------------" << endl;
 		return;
 	}
 
@@ -60,10 +60,10 @@ void DataList::AddData(Data& data)
 	if (data.GetIFeatureNum() != iColumnNum || data.GetFFeatureNum() != fColumnNum ||
 		data.GetCFeatureNum() != cColumnNum || data.GetSFeatureNum() != sColumnNum)
 	{
-		cout << "Size of the data is not equal to the given size of the columns." << endl;
+		cerr << "Size of the data is not equal to the given size of the columns." << endl;
 		data.PrintData();
-		cout << "Unable to add this data" << endl;
-		cout << "-------------------------" << endl;
+		cerr << "Unable to add this data" << endl;
+		cerr << "-------------------------" << endl;
 		return;
 	}
 
@@ -120,7 +120,7 @@ void DataList::ReadCSV(string filePath, string columnsType)
 
 	if (iCount != iColumnNum || fCount != fColumnNum || cCount != cColumnNum || sCount != sColumnNum)
 	{
-		cout << "Some/All column type is not equal to the given size of the columns." << endl;
+		cerr << "Some/All column type is not equal to the given size of the columns." << endl;
 		return;
 	}
 
@@ -132,7 +132,7 @@ void DataList::ReadCSV(string filePath, string columnsType)
 	// check if counted columns is equal to data list column num
 	if (Utils::CountChar(line, ',') + 1 != GetColumnNum())
 	{
-		cout << "Number of columns from the file is not equal to number of columns from this data list." << endl;
+		cerr << "Number of columns from the file is not equal to number of columns from this data list." << endl;
 		return;
 	}
 
@@ -176,7 +176,7 @@ void DataList::ReadCSV(string filePath, string columnsType)
 				break;
 
 			default:
-				cout << "The program doesn't know data type" + currentType << endl;
+				cerr << "The program doesn't know data type" + currentType << endl;
 				break;
 			}
 		}
@@ -184,4 +184,16 @@ void DataList::ReadCSV(string filePath, string columnsType)
 		cout << row + 1 << "/" << rowNum << endl;
 	}
 	
+}
+
+Data& DataList::GetDataAt(int index)
+{
+	if (index >= rowNum)
+	{
+		cerr << "index out of bounds" << endl;
+		Data nullData;
+		return nullData;
+	}
+
+	return dataArray[index];
 }
