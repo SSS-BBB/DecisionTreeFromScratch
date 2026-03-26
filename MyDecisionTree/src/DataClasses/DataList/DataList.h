@@ -1,5 +1,6 @@
 #pragma once
 #include "../Data/Data.h"
+#include "../DataConverter/DataConverter.h"
 #include <vector>
 
 using namespace std;
@@ -8,10 +9,7 @@ class DataList
 {
 private:
 	// number of features(columns) for each data types
-	int iColumnNum;
-	int fColumnNum;
-	int cColumnNum;
-	int sColumnNum;
+	int columnNum;
 
 	// number of all the datas
 	int rowNum;
@@ -19,18 +17,22 @@ private:
 	// index of the last row
 	int rearRowIndex;
 
+	// data converter to convert from string to float (null if the column is already int or float)
+	vector<DataConverter> dataConverter;
+
 public:
 	vector<Data> dataArray;
 
-	DataList(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatureNum, int p_rowNum);
+	DataList(int p_columnNum, int p_rowNum);
 
-	int GetColumnNum();
-	int GetRowNum();
+	int getColumnNum();
+	int getRowNum();
 
-	void AddData(Data &data); // Add Data From Data Class
-	void PrintDataList();
+	void addData(Data &data); // Add Data From Data Class
+	void printDataList();
+	void convertAndPrint();
 
-	void ReadCSV(string filePath, string columnsType);
+	void readCSV(string filePath, string columnsVariableType, vector<float> columnsDataType);
 
-	Data& GetDataAt(int index);
+	Data& getDataAt(int index);
 };

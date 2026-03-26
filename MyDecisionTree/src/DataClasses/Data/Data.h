@@ -14,10 +14,12 @@ private:
 	// last index
 	int rearIndex;
 
+	
+
+public:
 	// array of the features
 	vector<vector<float>> rowData; // first value is the data, and the second value is the type 0 -> categorical, 1 -> numerical
 
-public:
 	Data(int p_featureNum);
 
 	// Insert Datas

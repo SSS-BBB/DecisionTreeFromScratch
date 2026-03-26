@@ -29,3 +29,8 @@ string DataConverter::convertBack(float value)
 	// unable to find the value to convert back to
 	return "No Value!";
 }
+
+float DataConverter::getCurrentValue()
+{
+	return currentValue;
+}

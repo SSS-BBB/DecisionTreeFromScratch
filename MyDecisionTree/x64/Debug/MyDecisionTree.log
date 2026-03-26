@@ -1,7 +1,8 @@
-﻿  DataList.cpp
+﻿  DataConverter.cpp
+  DataList.cpp
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(136,26): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Data.cpp
   Main.cpp
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(15,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
   Node.cpp
   Generating Code...
 C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\Node\Node.cpp(140,1): warning C4172: returning address of local variable or temporary : nullNode

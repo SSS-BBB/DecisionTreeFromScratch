@@ -10,26 +10,31 @@ using namespace std;
 
 int main()
 {	
-	// 1 1 2 3 2 1 3 4
-	vector<string> strList = {"Hello", "Hello", "World", "Hi", "World", "Hello", "Hi", "Bye"};
-	int n = strList.size();
+	//// 1 1 2 3 2 1 3 4
+	//vector<string> strList = {"Hello", "Hello", "World", "Hi", "World", "Hello", "Hi", "Bye"};
+	//int n = strList.size();
 
-	DataConverter converter = DataConverter();
-	vector<float> convertedList;
-	convertedList.reserve(n);
+	//DataConverter converter = DataConverter();
+	//vector<float> convertedList;
+	//convertedList.reserve(n);
 
-	for (int i = 0; i < n; i++)
-	{
-		float convertedValue = converter.convert(strList[i]);
-		convertedList.push_back(convertedValue);
-	}
+	//for (int i = 0; i < n; i++)
+	//{
+	//	float convertedValue = converter.convert(strList[i]);
+	//	convertedList.push_back(convertedValue);
+	//}
 
-	Data data = Data(8);
-	for (int i = 0; i < n; i++)
-	{
-		data.insertData(convertedList[i], 0.0);
-	}
-	data.printData();
+	//Data data = Data(8);
+	//for (int i = 0; i < n; i++)
+	//{
+	//	data.insertData(convertedList[i], 0.0);
+	//}
+	//data.printData();
+
+	vector<float> dataType = {0, 1, 0, 0, 1, 0, 0, 1, 0};
+	DataList dataList(9, 2026);
+	dataList.readCSV("data/Employee.csv", "sisiissii", dataType);
+	dataList.convertAndPrint();
 
 
 	return 0;

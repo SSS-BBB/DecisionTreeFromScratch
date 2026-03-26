@@ -13,5 +13,6 @@ public:
 	DataConverter();
 	float convert(string data);
 	string convertBack(float value);
+	float getCurrentValue();
 };
 
