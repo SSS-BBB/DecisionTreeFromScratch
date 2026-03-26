@@ -1,51 +1,34 @@
 #pragma once
 #include <string>
 #include <vector>
+#include <map>
 
 using namespace std;
 
 class Data
 {
 private:
-	// number of features for each data types
-	int iFeatureNum;
-	int fFeatureNum;
-	int cFeatureNum;
-	int sFeatureNum;
+	// number of features
+	int featureNum;
 
-	// last index of each datatypes
-	int rearIndexInt;
-	int rearIndexFloat;
-	int rearIndexChar;
-	int rearIndexString;
+	// last index
+	int rearIndex;
 
 	// array of the features
-	vector<int> iFeatureArray;
-	vector<float> fFeatureArray;
-	vector<char> cFeatureArray;
-	vector<string> sFeatureArray;
+	vector<vector<float>> rowData; // first value is the data, and the second value is the type 0 -> categorical, 1 -> numerical
 
 public:
-	Data(int p_iFeatureNum = 0, int p_fFeatureNum = 0, int p_cFeatureNum = 0, int p_sFeatureNum = 0);
+	Data(int p_featureNum);
 
 	// Insert Datas
-	void InsertInt(int data);
-	void InsertFloat(float data);
-	void InsertChar(char data);
-	void InsertString(string data);
+	void insertData(float data, float type);
 
 	// Show Datas
-	void PrintData();
+	void printData();
 
 	// Getter
-	int GetIFeatureNum();
-	int GetFFeatureNum();
-	int GetCFeatureNum();
-	int GetSFeatureNum();
+	int getFeatureNum();
 
 	// Get Data
-	int GetIData(int index);
-	float GetFData(int index);
-	char GetCData(int index);
-	string GetSData(int index);
+	float getColumn(int index);
 };

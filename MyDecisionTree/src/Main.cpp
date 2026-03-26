@@ -24,11 +24,12 @@ int main()
 		convertedList.push_back(convertedValue);
 	}
 
-	for (float value : convertedList)
+	Data data = Data(8);
+	for (int i = 0; i < n; i++)
 	{
-		cout << value << " ";
+		data.insertData(convertedList[i], 0.0);
 	}
-	cout << endl;
+	data.printData();
 
 
 	return 0;

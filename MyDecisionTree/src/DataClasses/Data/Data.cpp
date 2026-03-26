@@ -1,171 +1,52 @@
 #include "Data.h"
 #include <iostream>
 
-Data::Data(int p_iFeatureNum, int p_fFeatureNum, int p_cFeatureNum, int p_sFeatureNum)
+Data::Data(int p_featureNum)
 {
 	// Initialize feature numbers
-	iFeatureNum = p_iFeatureNum;
-	fFeatureNum = p_fFeatureNum;
-	cFeatureNum = p_cFeatureNum;
-	sFeatureNum = p_sFeatureNum;
+	featureNum = p_featureNum;
 
 	// Initialize features array
-	iFeatureArray.reserve(iFeatureNum);
-	fFeatureArray.reserve(fFeatureNum);
-	cFeatureArray.reserve(cFeatureNum);
-	sFeatureArray.reserve(sFeatureNum);
+	rowData = vector<vector<float>>();
+	rowData.reserve(featureNum);
 
 	// Initialize rear indexes
-	rearIndexInt = -1;
-	rearIndexFloat = -1;
-	rearIndexChar = -1;
-	rearIndexString = -1;
+	rearIndex = -1;
 }
 
-void Data::InsertInt(int data)
+void Data::insertData(float data, float type)
 {
-
-	if (rearIndexInt >= iFeatureNum - 1)
+	if (rearIndex >= featureNum - 1)
 	{
-		cerr << "Integer array is full, unable to insert " << data << endl;
+		cerr << "This row is full, unable to insert " << data << endl;
 		return;
 	}
-
-	rearIndexInt++;
-	iFeatureArray.push_back(data);
+	rearIndex++;
+	vector<float> newData = {data, type};
+	rowData.push_back(newData);
 }
 
-void Data::InsertFloat(float data)
+void Data::printData()
 {
-
-	if (rearIndexFloat >= fFeatureNum - 1)
+	for (int i = 0; i < rowData.size(); i++)
 	{
-		cerr << "Float array is full, unable to insert " << data << endl;
-		return;
+		cout << rowData[i][0] << " ";
+	}
+	cout << endl;
+}
+
+int Data::getFeatureNum()
+{
+	return featureNum;
+}
+
+float Data::getColumn(int index)
+{
+	if (index >= featureNum)
+	{
+		cerr << "Index out of bounds" << endl;
+		return -1.0f;
 	}
 
-	rearIndexFloat++;
-	fFeatureArray.push_back(data);
-}
-
-void Data::InsertChar(char data)
-{
-
-	if (rearIndexChar >= cFeatureNum - 1)
-	{
-		cerr << "Char array is full, unable to insert " << data << endl;
-		return;
-	}
-
-	rearIndexChar++;
-	cFeatureArray.push_back(data);
-}
-
-void Data::InsertString(string data)
-{
-
-	if (rearIndexString >= sFeatureNum - 1)
-	{
-		cerr << "String array is full, unable to insert " << data << endl;
-		return;
-	}
-
-	rearIndexString++;
-	sFeatureArray.push_back(data);
-}
-
-void Data::PrintData()
-{
-
-	// cout << "Integer Data:" << endl;
-	for (int i = 0; i <= rearIndexInt; i++)
-	{
-		cout << iFeatureArray[i] << ", ";
-	}
-	// cout << "\n----------------\n";
-
-	// cout << "Float Data:" << endl;
-	for (int i = 0; i <= rearIndexFloat; i++)
-	{
-		cout << fFeatureArray[i] << ", ";
-	}
-	// cout << "\n----------------\n";
-
-	// cout << "Character Data:" << endl;
-	for (int i = 0; i <= rearIndexChar; i++)
-	{
-		cout << cFeatureArray[i] << ", ";
-	}
-	// cout << "\n----------------\n";
-
-	// cout << "String Data:" << endl;
-	for (int i = 0; i <= rearIndexString; i++)
-	{
-		cout << sFeatureArray[i] << ", ";
-	}
-	// cout << "\n----------------\n";
-	cout << "\n";
-}
-
-int Data::GetIFeatureNum()
-{
-	return iFeatureNum;
-}
-
-int Data::GetFFeatureNum()
-{
-	return fFeatureNum;
-}
-
-int Data::GetCFeatureNum()
-{
-	return cFeatureNum;
-}
-
-int Data::GetSFeatureNum()
-{
-	return sFeatureNum;
-}
-
-int Data::GetIData(int index)
-{
-	if (index >= iFeatureNum)
-	{
-		cerr << "index out of bounds" << endl;
-		return 0;
-	}
-
-	return iFeatureArray[index];
-}
-
-float Data::GetFData(int index)
-{
-	if (index >= fFeatureNum)
-	{
-		cerr << "index out of bounds" << endl;
-		return 0.0f;
-	}
-
-	return fFeatureArray[index];
-}
-
-char Data::GetCData(int index)
-{
-	if (index >= cFeatureNum)
-	{
-		cerr << "index out of bounds" << endl;
-		return 0;
-	}
-	return cFeatureArray[index];
-}
-
-string Data::GetSData(int index)
-{
-	if (index >= sFeatureNum)
-	{
-		cerr << "index out of bounds" << endl;
-		return "";
-	}
-
-	return sFeatureArray[index];
+	return rowData[index][0];
 }

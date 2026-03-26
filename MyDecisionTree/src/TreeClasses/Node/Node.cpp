@@ -135,12 +135,12 @@ Node& Node::NextNode(Data& data)
 	{
 		cerr << "Left Node/Right Node is nullptr" << endl;
 		cerr << "Unable to process this data:" << endl;
-		data.PrintData();
+		// data.PrintData();
 		Node nullNode('N', -1);
 		return nullNode;
 	}
 
-	switch (dataType)
+	/*switch (dataType)
 	{
 	case 'i':
 		if (ISplit(data.GetIData(targetColumnIndex)))
@@ -165,7 +165,7 @@ Node& Node::NextNode(Data& data)
 	default:
 		cerr << "Unknown dataype: " << dataType << endl;
 		break;
-	}
+	}*/
 
 	Node nullNode('N', -1);
 	return nullNode;

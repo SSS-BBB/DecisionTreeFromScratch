@@ -1,3 +1,9 @@
-﻿  Main.cpp
+﻿  DataList.cpp
+  Data.cpp
+  Main.cpp
 C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(15,8): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+  Node.cpp
+  Generating Code...
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\Node\Node.cpp(140,1): warning C4172: returning address of local variable or temporary : nullNode
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\Node\Node.cpp(171,1): warning C4172: returning address of local variable or temporary : nullNode
   MyDecisionTree.vcxproj -> C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\x64\Debug\MyDecisionTree.exe

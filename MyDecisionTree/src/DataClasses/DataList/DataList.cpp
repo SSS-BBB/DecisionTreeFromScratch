@@ -50,14 +50,14 @@ void DataList::AddData(Data& data)
 	if (rearRowIndex >= rowNum - 1)
 	{
 		cerr << "Data List is full, unable to add more data." << endl;
-		data.PrintData();
+		// data.PrintData();
 		cerr << "Unable to add this data" << endl;
 		cerr << "-------------------------" << endl;
 		return;
 	}
 
 	// check if passed data is valid -> size of the data is equal to the given size
-	if (data.GetIFeatureNum() != iColumnNum || data.GetFFeatureNum() != fColumnNum ||
+	/*if (data.GetIFeatureNum() != iColumnNum || data.GetFFeatureNum() != fColumnNum ||
 		data.GetCFeatureNum() != cColumnNum || data.GetSFeatureNum() != sColumnNum)
 	{
 		cerr << "Size of the data is not equal to the given size of the columns." << endl;
@@ -65,7 +65,7 @@ void DataList::AddData(Data& data)
 		cerr << "Unable to add this data" << endl;
 		cerr << "-------------------------" << endl;
 		return;
-	}
+	}*/
 
 	rearRowIndex++;
 	dataArray.emplace_back(data);
@@ -81,11 +81,11 @@ void DataList::PrintDataList()
 
 	for (int i = 0; i <= rearRowIndex; i++)
 	{
-		dataArray[i].PrintData();
+		// dataArray[i].PrintData();
 	}
 }
 
-void DataList::ReadCSV(string filePath, string columnsType)
+/*void DataList::ReadCSV(string filePath, string columnsType)
 {
 	// Columns Type to let the program knows which type is this column
 	// Ex. ifcs -> first column is integer, second is float, third is char, last is string
@@ -184,9 +184,9 @@ void DataList::ReadCSV(string filePath, string columnsType)
 		cout << row + 1 << "/" << rowNum << endl;
 	}
 	
-}
+} */
 
-Data& DataList::GetDataAt(int index)
+/* Data& DataList::GetDataAt(int index)
 {
 	if (index >= rowNum)
 	{
@@ -196,4 +196,4 @@ Data& DataList::GetDataAt(int index)
 	}
 
 	return dataArray[index];
-}
+} */
