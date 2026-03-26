@@ -58,6 +58,21 @@ void DataList::printDataList()
 	}
 }
 
+void DataList::printDataList(int startIndex, int endIndex)
+{
+	int n = endIndex - startIndex + 1;
+	if (n > rowNum || n <= 0 || startIndex >= rowNum || endIndex >= rowNum)
+	{
+		cerr << "index out of bounds, unable to print data list." << endl;
+		return;
+	}
+
+	for (int i = startIndex; i <= endIndex; i++)
+	{
+		dataArray[i].printData();
+	}
+}
+
 void DataList::convertAndPrint()
 {
 	// convert Data back and print the data
@@ -77,6 +92,51 @@ void DataList::convertAndPrint()
 			}
 		}
 		cout << endl;
+		// print data type after the last row
+		if (i == rearRowIndex)
+		{
+			for (int j = 0; j < columnNum; j++)
+			{
+				cout << currentRow.getColumnType(j) << " ";
+			}
+			cout << endl;
+		}
+	}
+}
+
+void DataList::convertAndPrint(int startIndex, int endIndex)
+{
+	int n = endIndex - startIndex + 1;
+	if (n > rowNum || n <= 0 || startIndex >= rowNum || endIndex >= rowNum)
+	{
+		cerr << "index out of bounds, unable to convert and print data list." << endl;
+		return;
+	}
+	for (int i = startIndex; i <= endIndex; i++)
+	{
+		Data& currentRow = dataArray[i];
+		for (int j = 0; j < columnNum; j++)
+		{
+			// only convert the column that has been converted
+			if (dataConverter[j].getCurrentValue() > 0)
+			{
+				cout << dataConverter[j].convertBack(currentRow.getColumn(j)) << " ";
+			}
+			else
+			{
+				cout << currentRow.getColumn(j) << " ";
+			}
+		}
+		cout << endl;
+		// print data type after the last row
+		if (i == rearRowIndex)
+		{
+			for (int j = 0; j < columnNum; j++)
+			{
+				cout << currentRow.getColumnType(j) << " ";
+			}
+			cout << endl;
+		}
 	}
 }
 
@@ -114,7 +174,7 @@ void DataList::readCSV(string filePath, string columnsVariableType, vector<float
 	// create Converter for each column
 	for (int i = 0; i < columnNum; i++)
 	{
-		dataConverter.push_back(DataConverter());
+		dataConverter.emplace_back(DataConverter());
 	}
 
 	// add data
@@ -170,4 +230,31 @@ Data& DataList::getDataAt(int index)
 	}
 
 	return dataArray[index];
+}
+
+DataList DataList::sliceColumn(int startIndex, int endIndex)
+{
+	int n = endIndex - startIndex + 1; // column length after sliced
+	if (n > columnNum || n <= 0 || startIndex >= columnNum || endIndex >= columnNum)
+	{
+		cerr << "index out of bounds, unable to slice the columns." << endl;
+		return *this;
+	}
+
+	DataList dropedDataList(n, rowNum);
+
+	// add converter
+	for (int i = startIndex; i <= endIndex; i++)
+	{
+		dropedDataList.dataConverter.emplace_back(dataConverter[i]);
+	}
+
+	// add data
+	for (int i = 0; i < rowNum; i++)
+	{
+		Data slicedData = dataArray[i].slice(startIndex, endIndex);
+		dropedDataList.addData(slicedData);
+	}
+
+	return dropedDataList;
 }

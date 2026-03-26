@@ -33,4 +33,8 @@ public:
 
 	// Get Data
 	float getColumn(int index);
+	float getColumnType(int index);
+
+	// Drop column
+	Data slice(int startIndex, int endIndex);
 };

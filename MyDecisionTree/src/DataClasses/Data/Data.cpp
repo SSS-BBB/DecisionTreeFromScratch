@@ -50,3 +50,32 @@ float Data::getColumn(int index)
 
 	return rowData[index][0];
 }
+
+float Data::getColumnType(int index)
+{
+	if (index >= featureNum)
+	{
+		cerr << "Index out of bounds" << endl;
+		return -1.0f;
+	}
+
+	return rowData[index][1];
+}
+
+Data Data::slice(int startIndex, int endIndex)
+{
+	int n = endIndex - startIndex + 1; // array length after sliced
+	if (n > featureNum || n <= 0 || startIndex >= featureNum || endIndex >= featureNum)
+	{
+		cerr << "Index out of bounds, unable to slice the data." << endl;
+		return *this;
+	}
+
+	Data dropedData(n);
+	for (int i = startIndex; i <= endIndex; i++)
+	{
+		dropedData.insertData(rowData[i][0], rowData[i][1]);
+	}
+
+	return dropedData;
+}
