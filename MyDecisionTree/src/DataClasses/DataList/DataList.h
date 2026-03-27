@@ -44,4 +44,7 @@ public:
 	float getDataAt(int rowIndex, int columnIndex);
 	DataList sliceColumn(int startIndex, int endIndex);
 	DataList sliceRow(int startIndex, int endIndex);
+
+	void saveConverterAt(int index, string filepath);
+	void setDataConverter(int index, DataConverter &newDataConverter);
 };

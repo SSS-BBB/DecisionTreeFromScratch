@@ -247,8 +247,8 @@ DataList DataList::sliceColumn(int startIndex, int endIndex)
 	// add converter
 	for (int i = startIndex; i <= endIndex; i++)
 	{
-		// 0 -> n-1                                  startIndex -> endIndex
-		dropedDataList.dataConverter[i-startIndex] = dataConverter[i];
+		//                              0 -> n-1       startIndex -> endIndex
+		dropedDataList.setDataConverter(i - startIndex, dataConverter[i]);
 	}
 
 	// add data
@@ -280,7 +280,7 @@ DataList DataList::sliceRow(int startIndex, int endIndex)
 	// add converter
 	for (int i = 0; i < columnNum; i++)
 	{
-		slicedDataList.dataConverter[i] = dataConverter[i];
+		slicedDataList.setDataConverter(i, dataConverter[i]);
 	}
 
 	for (int i = startIndex; i <= endIndex; i++)
@@ -289,5 +289,27 @@ DataList DataList::sliceRow(int startIndex, int endIndex)
 	}
 
 	return slicedDataList;
+}
+
+void DataList::saveConverterAt(int index, string filepath)
+{
+	if (index < 0 || index >= columnNum)
+	{
+		cerr << "index out of bounds, unable to save data converter at " << index << endl;
+		return;
+	}
+
+	dataConverter[index].save(filepath);
+}
+
+void DataList::setDataConverter(int index, DataConverter &newDataConverter)
+{
+	if (index < 0 || index >= columnNum)
+	{
+		cerr << "index out of bounds, unable to set data converter at " << index << endl;
+		return;
+	}
+
+	dataConverter[index] = newDataConverter;
 }
 

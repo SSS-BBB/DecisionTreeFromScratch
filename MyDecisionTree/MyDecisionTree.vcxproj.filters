@@ -18,9 +18,6 @@
     <ClCompile Include="src\Main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\DataClasses\Data\Data.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\DataClasses\DataList\DataList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -35,9 +32,6 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\DataClasses\Data\Data.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\DataClasses\DataList\DataList.h">
       <Filter>Header Files</Filter>
     </ClInclude>
