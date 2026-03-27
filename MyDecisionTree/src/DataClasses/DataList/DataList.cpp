@@ -3,10 +3,10 @@
 #include <fstream>
 #include "../../Utils/Utils.h"
 
-DataList::DataList(int p_columnNum, int p_rowNum)
+DataList::DataList(int p_rowNum, vector<int> p_columnDataTypes)
 {
 	// Initialize column numbers
-	columnNum = p_columnNum;
+	columnNum = p_columnDataTypes.size();
 
 	// Initialize rows number and index
 	rowNum = p_rowNum;
@@ -17,6 +17,16 @@ DataList::DataList(int p_columnNum, int p_rowNum)
 
 	// initialize data converter with size
 	dataConverter.reserve(columnNum);
+
+	// initialize column data types
+	columnDataTypes.reserve(columnNum);
+	columnDataTypes = p_columnDataTypes;
+
+	// create data converter for each columns
+	for (int i = 0; i < columnNum; i++)
+	{
+		dataConverter.emplace_back(DataConverter());
+	}
 }
 
 int DataList::getColumnNum()
@@ -29,19 +39,37 @@ int DataList::getRowNum()
 	return rowNum;
 }
 
-void DataList::addData(Data& data)
+void DataList::addRow(vector<float> rowData)
 {
+	// check if datas are full
 	if (rearRowIndex >= rowNum - 1)
 	{
 		cerr << "Data List is full, unable to add more data." << endl;
-		// data.PrintData();
+		cerr << "Unable to add this data" << endl;
+		cerr << "-------------------------" << endl;
+		return;
+	}
+	// check if columns don't match
+	if (rowData.size() != columnNum)
+	{
+		cerr << "Columns from this data don't match column number given for this DataList Class." << endl;
 		cerr << "Unable to add this data" << endl;
 		cerr << "-------------------------" << endl;
 		return;
 	}
 
+
 	rearRowIndex++;
-	dataArray.emplace_back(data);
+	dataArray.emplace_back(rowData);
+}
+
+void DataList::printColumnDataTypes()
+{
+	for (int j = 0; j < columnNum; j++)
+	{
+		cout << columnDataTypes[j] << " ";
+	}
+	cout << endl;
 }
 
 void DataList::printDataList()
@@ -52,10 +80,7 @@ void DataList::printDataList()
 		return;
 	}*/
 
-	for (int i = 0; i <= rearRowIndex; i++)
-	{
-		dataArray[i].printData();
-	}
+	printDataList(0, rearRowIndex);
 }
 
 void DataList::printDataList(int startIndex, int endIndex)
@@ -69,39 +94,21 @@ void DataList::printDataList(int startIndex, int endIndex)
 
 	for (int i = startIndex; i <= endIndex; i++)
 	{
-		dataArray[i].printData();
+		for (int j = 0; j < columnNum; j++)
+		{
+			cout << dataArray[i][j] << " ";
+		}
+		cout << endl;
+		if (i == rearRowIndex)
+		{
+			printColumnDataTypes();
+		}
 	}
 }
 
 void DataList::convertAndPrint()
 {
-	// convert Data back and print the data
-	for (int i = 0; i <= rearRowIndex; i++)
-	{
-		Data& currentRow = dataArray[i];
-		for (int j = 0; j < columnNum; j++)
-		{
-			// only convert the column that has been converted
-			if (dataConverter[j].getCurrentValue() > 0)
-			{
-				cout << dataConverter[j].convertBack(currentRow.getColumn(j)) << " ";
-			}
-			else
-			{
-				cout << currentRow.getColumn(j) << " ";
-			}
-		}
-		cout << endl;
-		// print data type after the last row
-		if (i == rearRowIndex)
-		{
-			for (int j = 0; j < columnNum; j++)
-			{
-				cout << currentRow.getColumnType(j) << " ";
-			}
-			cout << endl;
-		}
-	}
+	convertAndPrint(0, rearRowIndex);
 }
 
 void DataList::convertAndPrint(int startIndex, int endIndex)
@@ -114,32 +121,29 @@ void DataList::convertAndPrint(int startIndex, int endIndex)
 	}
 	for (int i = startIndex; i <= endIndex; i++)
 	{
-		Data& currentRow = dataArray[i];
 		for (int j = 0; j < columnNum; j++)
 		{
 			// only convert the column that has been converted
 			if (dataConverter[j].getCurrentValue() > 0)
 			{
-				cout << dataConverter[j].convertBack(currentRow.getColumn(j)) << " ";
+				cout << dataConverter[j].convertBack(dataArray[i][j]) << " ";
 			}
 			else
 			{
-				cout << currentRow.getColumn(j) << " ";
+				cout << dataArray[i][j] << " ";
 			}
 		}
 		cout << endl;
 		// print data type after the last row
 		if (i == rearRowIndex)
 		{
-			for (int j = 0; j < columnNum; j++)
-			{
-				cout << currentRow.getColumnType(j) << " ";
-			}
-			cout << endl;
+			printColumnDataTypes();
 		}
 	}
 }
 
+
+/*
 void DataList::readCSV(string filePath, string columnsVariableType, vector<float> columnsDataType)
 {
 	// Columns Variable Type to let the program knows which type is this column
@@ -169,12 +173,6 @@ void DataList::readCSV(string filePath, string columnsVariableType, vector<float
 	{
 		cerr << "Number of columns from the file does not equal to number of columns from this data list." << endl;
 		return;
-	}
-
-	// create Converter for each column
-	for (int i = 0; i < columnNum; i++)
-	{
-		dataConverter.emplace_back(DataConverter());
 	}
 
 	// add data
@@ -258,3 +256,4 @@ DataList DataList::sliceColumn(int startIndex, int endIndex)
 
 	return dropedDataList;
 }
+*/
