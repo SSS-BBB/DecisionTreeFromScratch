@@ -10,6 +10,7 @@ using namespace std;
 
 int main()
 {	
+	/*
 	vector<int> dummyDataType = { 0, 1, 0, 0, 1 };
 	DataList dummyData(20, dummyDataType);
 
@@ -26,17 +27,18 @@ int main()
 	dummyData.addRow(row5);
 
 	dummyData.printDataList();
-
-	/*
-	vector<float> dataType = {0, 1, 0, 0, 1, 0, 0, 1, 0};
-	DataList dataList(9, 2026);
-	dataList.readCSV("data/Employee.csv", "sisiissii", dataType);
-	
-	DataList slicedDataList = dataList.sliceColumn(2, 5);
-	dataList.printDataList(0, 9);
-	cout << "-----------------" << endl;
-	slicedDataList.printDataList(0, 9);
 	*/
+
+	
+	vector<int> dataType = {0, 1, 0, 0, 1, 0, 0, 1, 0};
+	DataList dataList(2026, dataType);
+	dataList.readCSV("data/Employee.csv", "sisiissii");
+	// dataList.convertAndPrint();
+	
+	DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 1000);
+	dataList.convertAndPrint(0, 9);
+	cout << "-----------------" << endl;
+	slicedDataList.convertAndPrint(0, 9);
 
 
 	return 0;

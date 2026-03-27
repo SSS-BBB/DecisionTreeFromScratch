@@ -39,8 +39,9 @@ public:
 	void convertAndPrint();
 	void convertAndPrint(int startIndex, int endIndex);
 
-	// void readCSV(string filePath, string columnsVariableType);
+	void readCSV(string filePath, string columnsVariableType);
 
-	// float getDataAt(int rowIndex, int columnIndex);
-	// DataList sliceColumn(int startIndex, int endIndex);
+	float getDataAt(int rowIndex, int columnIndex);
+	DataList sliceColumn(int startIndex, int endIndex);
+	DataList sliceRow(int startIndex, int endIndex);
 };

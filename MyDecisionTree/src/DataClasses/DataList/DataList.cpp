@@ -143,8 +143,8 @@ void DataList::convertAndPrint(int startIndex, int endIndex)
 }
 
 
-/*
-void DataList::readCSV(string filePath, string columnsVariableType, vector<float> columnsDataType)
+
+void DataList::readCSV(string filePath, string columnsVariableType)
 {
 	// Columns Variable Type to let the program knows which type is this column
 	// Ex. ifcs -> first column is integer, second is float, third is char, last is string
@@ -155,11 +155,6 @@ void DataList::readCSV(string filePath, string columnsVariableType, vector<float
 	if (columnsVariableType.size() != columnNum)
 	{
 		cerr << "Columns Variable Type does not equal to the given size of the columns." << endl;
-		return;
-	}
-	if (columnsDataType.size() != columnNum)
-	{
-		cerr << "Columns Data Type does not equal to the given size of the columns." << endl;
 		return;
 	}
 
@@ -187,7 +182,8 @@ void DataList::readCSV(string filePath, string columnsVariableType, vector<float
 		}
 
 		// add a row
-		Data data(columnNum);
+		vector<float> currentRow;
+		currentRow.reserve(columnNum);
 		for (int i = 0; i < columnNum; i++)
 		{
 			// get cell
@@ -198,36 +194,36 @@ void DataList::readCSV(string filePath, string columnsVariableType, vector<float
 
 			// add data to a row
 			char currentVariableType = columnsVariableType[i];
-			float currentDataType = columnsDataType[i];
+			float currentDataType = columnDataTypes[i];
 			DataConverter& currentConverter = dataConverter[i];
 
 			if (currentVariableType == 'i' || currentVariableType == 'f')
-				data.insertData(stof(currentCell), currentDataType);
+				currentRow.push_back(stof(currentCell));
 			else if (currentVariableType == 'c' || currentVariableType == 's')
 			{
 				float convertedValue = currentConverter.convert(currentCell);
-				data.insertData(convertedValue, currentDataType);
+				currentRow.push_back(convertedValue);
 			}
 			else
 			{
 				cerr << "The program doesn't know data type " + currentVariableType << endl;
 			}
 		}
-		addData(data);
+		addRow(currentRow);
 		cout << row + 1 << "/" << rowNum << endl;
 	}
 	
 }
 
-Data& DataList::getDataAt(int index)
+float DataList::getDataAt(int rowIndex, int columnIndex)
 {
-	if (index >= rowNum)
+	if (rowIndex >= rowNum || columnIndex >= columnNum || rowIndex < 0 || columnIndex < 0)
 	{
 		cerr << "index out of bounds" << endl;
-		return dataArray[0];
+		return dataArray[0][0];
 	}
 
-	return dataArray[index];
+	return dataArray[rowIndex][columnIndex];
 }
 
 DataList DataList::sliceColumn(int startIndex, int endIndex)
@@ -238,22 +234,60 @@ DataList DataList::sliceColumn(int startIndex, int endIndex)
 		cerr << "index out of bounds, unable to slice the columns." << endl;
 		return *this;
 	}
+	// create column data types
+	vector<int> droppedColumnDataTypes;
+	droppedColumnDataTypes.reserve(n);
+	for (int i = startIndex; i <= endIndex; i++)
+	{
+		droppedColumnDataTypes.push_back(columnDataTypes[i]);
+	}
 
-	DataList dropedDataList(n, rowNum);
+	DataList dropedDataList(rowNum, droppedColumnDataTypes);
 
 	// add converter
 	for (int i = startIndex; i <= endIndex; i++)
 	{
-		dropedDataList.dataConverter.emplace_back(dataConverter[i]);
+		// 0 -> n-1                                  startIndex -> endIndex
+		dropedDataList.dataConverter[i-startIndex] = dataConverter[i];
 	}
 
 	// add data
 	for (int i = 0; i < rowNum; i++)
 	{
-		Data slicedData = dataArray[i].slice(startIndex, endIndex);
-		dropedDataList.addData(slicedData);
+		vector<float> currentSlicedColumn;
+		currentSlicedColumn.reserve(n);
+		for (int j = startIndex; j <= endIndex; j++)
+		{
+			currentSlicedColumn.push_back(dataArray[i][j]);
+		}
+		dropedDataList.addRow(currentSlicedColumn);
 	}
 
 	return dropedDataList;
 }
-*/
+
+DataList DataList::sliceRow(int startIndex, int endIndex)
+{
+	int n = endIndex - startIndex + 1; // row length after sliced
+	if (n > rowNum || n <= 0 || startIndex >= rowNum || endIndex >= rowNum)
+	{
+		cerr << "index out of bounds, unable to slice the rows." << endl;
+		return *this;
+	}
+
+	DataList slicedDataList(n, columnDataTypes);
+
+	// add converter
+	for (int i = 0; i < columnNum; i++)
+	{
+		slicedDataList.dataConverter[i] = dataConverter[i];
+	}
+
+	for (int i = startIndex; i <= endIndex; i++)
+	{
+		slicedDataList.addRow(dataArray[i]);
+	}
+
+	return slicedDataList;
+}
+
