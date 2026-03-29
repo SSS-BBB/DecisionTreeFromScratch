@@ -1,6 +1,6 @@
 #pragma once
 #include <string>
-#include "../../DataClasses/Data/Data.h"
+#include "../../DataClasses/DataList/DataList.h"
 
 using namespace std;
 
@@ -8,45 +8,25 @@ class Node
 {
 private:
 	// value to compare
-	int iTreshold;
-	float fTreshold;
-	char cTreshold;
-	string sTreshold;
+	float treshold;
 
-	char dataType;
 	int targetColumnIndex;
 
 	// next node
 	Node* leftNode;
 	Node* rightNode;
 
-	// function to split data
-	// return true -> go to left node
-	bool ISplit(int data);
-	bool FSplit(float data);
-	bool CSplit(char data);
-	bool SSplit(string data);
+	bool isValueLeft(float value, int columnDataType); // check if the value should go to the left node
 
 public:
-	Node(char p_dataType, int p_targetColumnIndex); // Internal Node
-	Node(); // Leaf Node
 
-	void SetITreshold(int tresholdValue);
-	void SetFTreshold(float tresholdValue);
-	void SetCTreshold(char tresholdValue);
-	void SetSTreshold(string tresholdValue);
+	Node(int p_targetColumnIndex, float p_treshold);
 
-	int GetITreshold();
-	float GetFTreshold();
-	char GetCTreshold();
-	string GetSTreshold();
+	// function to split data to left and right node (if not leaf node)
+	void split(vector<int> rowIndexes, DataList& data, vector<float>& labels);
 
-	void SetLeftNode(Node& node);
-	void SetRightNode(Node& node);
+	void setLeftNode(Node* node);
+	void setRightNode(Node* node);
 
-	Node& NextNode(Data& data);
-
-	void PrintNode();
-
-	bool IsLeafNode();
+	bool isLeafNode();
 };

@@ -233,7 +233,8 @@ float DataList::getDataAt(int rowIndex, int columnIndex)
 {
 	if (rowIndex >= rowNum || columnIndex >= columnNum || rowIndex < 0 || columnIndex < 0)
 	{
-		cerr << "index out of bounds" << endl;
+		cerr << "index out of bounds, unable to obtain data at this index." << endl;
+		cerr << "(" << rowIndex << "," << columnIndex << ")" << endl;
 		return dataArray[0][0];
 	}
 
@@ -325,5 +326,16 @@ void DataList::setDataConverter(int index, DataConverter &newDataConverter)
 	}
 
 	dataConverter[index] = newDataConverter;
+}
+
+int DataList::getColumnDataTypeAt(int columnIndex)
+{
+	if (columnIndex < 0 || columnIndex >= columnNum)
+	{
+		cerr << "index out of bounds, unable to get column data type at " << columnIndex << endl;
+		return -1;
+	}
+
+	return columnDataTypes[columnIndex];
 }
 

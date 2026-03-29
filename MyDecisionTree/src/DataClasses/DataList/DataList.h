@@ -50,4 +50,6 @@ public:
 
 	void saveConverterAt(int index, string filepath);
 	void setDataConverter(int index, DataConverter &newDataConverter);
+
+	int getColumnDataTypeAt(int columnIndex);
 };

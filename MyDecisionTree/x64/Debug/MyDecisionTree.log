@@ -1,16 +1,2 @@
-﻿  DataConverter.cpp
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataConverter\DataConverter.cpp(65,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataConverter\DataConverter.cpp(105,13): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataConverter\DataConverter.cpp(142,26): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataConverter\DataConverter.cpp(156,26): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  DataList.cpp
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(9,36): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(198,26): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(205,26): warning C4244: 'initializing': conversion from '_Ty' to 'float', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(205,26): warning C4244:         with
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(205,26): warning C4244:         [
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(205,26): warning C4244:             _Ty=int
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataList\DataList.cpp(205,26): warning C4244:         ]
-  Main.cpp
-  Generating Code...
+﻿  Main.cpp
   MyDecisionTree.vcxproj -> C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\x64\Debug\MyDecisionTree.exe

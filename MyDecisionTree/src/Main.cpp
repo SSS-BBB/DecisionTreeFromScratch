@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-	
+	/*
 	vector<int> dummyDataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dummyData(20, dummyDataType);
 
@@ -40,20 +40,61 @@ int main()
 
 	dummyData.convertAndPrint();
 	dummyData.printUniqueData();
+	*/
 
-	
-	
-	/*
+	const int N = 1000;
 	vector<int> dataType = {0, 1, 0, 0, 1, 0, 0, 1, 0};
-	DataList dataList(1000, dataType);
+	DataList dataList(N, dataType);
 	dataList.readCSV("data/Employee.csv", "sisiissii");
 	// dataList.convertAndPrint();
 	
-	DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 600);
+	// DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 600);
 
 	// save data converter
 	// dataList.saveConverterAt(1, "saved file/data converters/converter1.cvtr");
-	*/
+
+	// node test
+	// create data
+	DataList featureData = dataList.sliceColumn(0, 7);
+	featureData.printDataList(0, 9);
+	featureData.printUniqueData();
+
+	vector<float> labelsData;
+	labelsData.reserve(N);
+	for (int i = 0; i < N; i++)
+	{
+		labelsData.push_back(-1);
+	}
+
+	vector<int> dataIndexes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+
+	// create node
+	Node rootNode(2, 3);
+	Node node11(1, 2015);
+	Node node12(3, 2);
+	Node leafNode0(8, 0);
+	Node leafNode1(8, 1);
+
+	// connect node
+	rootNode.setLeftNode(&node11);
+	rootNode.setRightNode(&node12);
+
+	node11.setLeftNode(&leafNode0);
+	node11.setRightNode(&leafNode1);
+
+	node12.setLeftNode(&leafNode0);
+	node12.setRightNode(&leafNode1);
+
+	// test node
+	rootNode.split(dataIndexes, featureData, labelsData);
+
+	cout << "---------------" << endl;
+	// print labels
+	for (int index : dataIndexes)
+	{
+		cout << index << " " << labelsData[index] << endl;
+	}
+	
 
 
 	return 0;

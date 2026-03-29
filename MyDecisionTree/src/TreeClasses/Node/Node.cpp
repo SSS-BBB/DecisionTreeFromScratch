@@ -1,200 +1,85 @@
 #include "Node.h"
 #include <iostream>
 
-bool Node::ISplit(int data)
+bool Node::isValueLeft(float value, int columnDataType)
 {
-	if (data <= iTreshold)
-		return true;
+	// 0 -> categorical
+	if (columnDataType == 0)
+	{
+		return value == treshold;
+	}
+
+	// 1 -> numerical
+	if (columnDataType == 1)
+	{
+		return value <= treshold;
+	}
 
 	return false;
 }
 
-bool Node::FSplit(float data)
+Node::Node(int p_targetColumnIndex, float p_treshold)
 {
-	if (data <= fTreshold)
-		return true;
-
-	return false;
-}
-
-bool Node::CSplit(char data)
-{
-	if (data == cTreshold)
-		return true;
-
-	return false;
-}
-
-bool Node::SSplit(string data)
-{
-	if (data == sTreshold)
-		return true;
-
-	return false;
-}
-
-Node::Node(char p_dataType, int p_targetColumnIndex)
-{
-	dataType = p_dataType;
 	targetColumnIndex = p_targetColumnIndex;
-
-	// Initialize treshold
-	iTreshold = 0;
-	fTreshold = 0.0f;
-	cTreshold = 'o';
-	sTreshold = "o";
-
+	treshold = p_treshold;
 	leftNode = nullptr;
 	rightNode = nullptr;
 }
 
-Node::Node()
+void Node::split(vector<int> rowIndexes, DataList& data, vector<float>& labels)
 {
-	dataType = 'c';
-	targetColumnIndex = -1;
-
-	// Initialize treshold
-	iTreshold = 0;
-	fTreshold = 0.0f;
-	cTreshold = 'o';
-	sTreshold = "o";
-
-	leftNode = nullptr;
-	rightNode = nullptr;
-}
-
-void Node::SetITreshold(int tresholdValue)
-{
-	if (dataType != 'i')
+	// leaf node
+	if (isLeafNode())
 	{
-		cerr << "Warning: Setting Integer but Data Type is not integer" << endl;
+		// set labels
+		for (int index : rowIndexes)
+		{
+			labels[index] = treshold;
+		}
+		return;
 	}
-	iTreshold = tresholdValue;
-}
 
-void Node::SetFTreshold(float tresholdValue)
-{
-	if (dataType != 'f')
-	{
-		cerr << "Warning: Setting Float but Data Type is not float" << endl;
-	}
-	fTreshold = tresholdValue;
-}
-
-void Node::SetCTreshold(char tresholdValue)
-{
-	if (dataType != 'c')
-	{
-		cerr << "Warning: Setting Char but Data Type is not char" << endl;
-	}
-	cTreshold = tresholdValue;
-}
-
-void Node::SetSTreshold(string tresholdValue)
-{
-	if (dataType != 's')
-	{
-		cerr << "Warning: Setting String but Data Type is not string" << endl;
-	}
-	sTreshold = tresholdValue;
-}
-
-int Node::GetITreshold()
-{
-	return iTreshold;
-}
-
-float Node::GetFTreshold()
-{
-	return fTreshold;
-}
-
-char Node::GetCTreshold()
-{
-	return cTreshold;
-}
-
-string Node::GetSTreshold()
-{
-	return sTreshold;
-}
-
-void Node::SetLeftNode(Node& node)
-{
-	leftNode = &node;
-}
-
-void Node::SetRightNode(Node& node)
-{
-	rightNode = &node;
-}
-
-Node& Node::NextNode(Data& data)
-{
+	// not leaf node
+	// to make sure to not dereferrence nullptr
 	if (leftNode == nullptr || rightNode == nullptr)
 	{
-		cerr << "Left Node/Right Node is nullptr" << endl;
-		cerr << "Unable to process this data:" << endl;
-		// data.PrintData();
-		Node nullNode('N', -1);
-		return nullNode;
+		cerr << "Left or Right Node is null ptr, unable to proceed." << endl;
+		return;
 	}
 
-	/*switch (dataType)
-	{
-	case 'i':
-		if (ISplit(data.GetIData(targetColumnIndex)))
-			return *leftNode;
-		return *rightNode;
-		break;
-	case 'f':
-		if (FSplit(data.GetFData(targetColumnIndex)))
-			return *leftNode;
-		return *rightNode;
-		break;
-	case 'c':
-		if (CSplit(data.GetCData(targetColumnIndex)))
-			return *leftNode;
-		return *rightNode;
-		break;
-	case 's':
-		if (SSplit(data.GetSData(targetColumnIndex)))
-			return *leftNode;
-		return *rightNode;
-		break;
-	default:
-		cerr << "Unknown dataype: " << dataType << endl;
-		break;
-	}*/
+	vector<int> leftIndexArray;
+	vector<int> rightIndexArray;
 
-	Node nullNode('N', -1);
-	return nullNode;
+	for (int index : rowIndexes)
+	{
+		int columnDataType = data.getColumnDataTypeAt(targetColumnIndex);
+		float dataValue = data.getDataAt(index, targetColumnIndex);
+		if (isValueLeft(dataValue, columnDataType))
+		{
+			leftIndexArray.push_back(index);
+		}
+		else
+		{
+			rightIndexArray.push_back(index);
+		}
+	}
+
+	// go to the next node
+	leftNode->split(leftIndexArray, data, labels);
+	rightNode->split(rightIndexArray, data, labels);
 }
 
-void Node::PrintNode()
+void Node::setLeftNode(Node* node)
 {
-	switch (dataType)
-	{
-	case 'i':
-		cout << dataType << ", " << targetColumnIndex << ", " << iTreshold << endl;
-		break;
-	case 'f':
-		cout << dataType << ", " << targetColumnIndex << ", " << fTreshold << endl;
-		break;
-	case 'c':
-		cout << dataType << ", " << targetColumnIndex << ", " << cTreshold << endl;
-		break;
-	case 's':
-		cout << dataType << ", " << targetColumnIndex << ", " << sTreshold << endl;
-		break;
-
-	default:
-		cerr << "Unknown dataype: " << dataType << endl;
-		break;
-	}
+	leftNode = node;
 }
 
-bool Node::IsLeafNode()
+void Node::setRightNode(Node* node)
+{
+	rightNode = node;
+}
+
+bool Node::isLeafNode()
 {
 	return leftNode == nullptr && rightNode == nullptr;
 }
