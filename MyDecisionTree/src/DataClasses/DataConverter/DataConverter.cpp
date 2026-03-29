@@ -24,6 +24,8 @@ float DataConverter::convert(string data)
 	// creates new pair
 	currentValue++;
 	convertedDict.insert({data, currentValue});
+	// add unique value
+	addUniqueValue(currentValue);
 
 	return currentValue;
 }
@@ -43,6 +45,20 @@ float DataConverter::getCurrentValue()
 	return currentValue;
 }
 
+void DataConverter::addUniqueValue(float value)
+{
+	uniqueValues.insert(value);
+}
+
+void DataConverter::printUniqueValues()
+{
+	for (float unique : uniqueValues)
+	{
+		cout << unique << " ";
+	}
+	cout << endl;
+}
+
 void DataConverter::save(string filepath)
 {
 	// file surname must be .cvtr (converter)
@@ -57,11 +73,19 @@ void DataConverter::save(string filepath)
 	ofstream file(filepath);
 
 	// version
-	file << CURRENT_FILE_VERSION << endl;
+	file << CURRENT_SAVE_FILE_VERSION << endl;
 
 	// save current value
 	file << "currentValue" << endl;
 	file << currentValue << endl;
+
+	// save unique values
+	file << "uniqueValues" << endl;
+	for (float unique : uniqueValues)
+	{
+		file << unique << ",";
+	}
+	file << endl;
 
 	// save converted dictionary (map)
 	file << "convertedDict" << endl;
@@ -93,10 +117,10 @@ void DataConverter::load(string filepath)
 	getline(file, line);
 
 	// check version
-	if (line != CURRENT_FILE_VERSION)
+	if (line != CURRENT_LOAD_FILE_VERSION)
 	{
 		cerr << "Invalid File Version" << endl;
-		cerr << "Needs " << CURRENT_FILE_VERSION << endl;
+		cerr << "Needs " << CURRENT_LOAD_FILE_VERSION << " to load." << endl;
 		return;
 	}
 	getline(file, line);
@@ -106,6 +130,20 @@ void DataConverter::load(string filepath)
 	{
 		getline(file, line);
 		currentValue = stof(line);
+	}
+	getline(file, line);
+
+	// get unique values
+	if (line == "uniqueValues")
+	{
+		getline(file, line);
+		while (!line.empty())
+		{
+			int delimiterLocation = line.find(',');
+			float unique = stof(line.substr(0, delimiterLocation));
+			addUniqueValue(unique);
+			line = line.substr(delimiterLocation + 1);
+		}
 	}
 	getline(file, line);
 

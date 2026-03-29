@@ -10,7 +10,7 @@ using namespace std;
 
 int main()
 {
-	/*
+	
 	vector<int> dummyDataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dummyData(20, dummyDataType);
 
@@ -29,23 +29,31 @@ int main()
 	dummyData.convertAndPrint();
 	cout << "---------------" << endl;
 
-	DataConverter loadedConverter;
-	loadedConverter.load("saved file/data converters/converter0.cvtr");
-	dummyData.setDataConverter(0, loadedConverter);
+	// load converters
+	DataConverter loadedConverter0;
+	loadedConverter0.load("saved file/data converters/converter0.cvtr");
+	dummyData.setDataConverter(0, loadedConverter0);
+
+	DataConverter loadedConverter1;
+	loadedConverter1.load("saved file/data converters/converter1.cvtr");
+	dummyData.setDataConverter(1, loadedConverter1);
+
 	dummyData.convertAndPrint();
+	dummyData.printUniqueData();
 
-	*/
 	
-
+	
+	/*
 	vector<int> dataType = {0, 1, 0, 0, 1, 0, 0, 1, 0};
 	DataList dataList(1000, dataType);
 	dataList.readCSV("data/Employee.csv", "sisiissii");
 	// dataList.convertAndPrint();
 	
 	DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 600);
-	// dataList.convertAndPrint(0, 9);
-	// cout << "-----------------" << endl;
-	// slicedDataList.convertAndPrint(0, 9);
+
+	// save data converter
+	// dataList.saveConverterAt(1, "saved file/data converters/converter1.cvtr");
+	*/
 
 
 	return 0;

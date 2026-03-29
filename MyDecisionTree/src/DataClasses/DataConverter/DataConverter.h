@@ -1,6 +1,7 @@
 #pragma once
 #include <map>
 #include <string>
+#include <set>
 
 using namespace std;
 
@@ -9,7 +10,11 @@ class DataConverter
 private:
 	map<string, float> convertedDict;
 	float currentValue;
-	string CURRENT_FILE_VERSION = "CVTR 0.2";
+
+	set<float> uniqueValues;
+
+	string CURRENT_SAVE_FILE_VERSION = "CVTR 0.3";
+	string CURRENT_LOAD_FILE_VERSION = "CVTR 0.3";
 public:
 	DataConverter();
 	DataConverter(map<string, float> p_convertedDict, float p_currentValue); // initialize with values
@@ -18,6 +23,9 @@ public:
 	string convertBack(float value);
 
 	float getCurrentValue();
+
+	void addUniqueValue(float value);
+	void printUniqueValues();
 
 	void save(string filepath);
 	void load(string filepath);

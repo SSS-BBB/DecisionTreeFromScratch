@@ -1,10 +1,7 @@
 CVTR 0.3
 currentValue
-3
+0
 uniqueValues
-1,2,3,
+2012,2013,2014,2015,2016,2017,2018,
 convertedDict
-Bachelors,1
-Masters,2
-PHD,3
 end

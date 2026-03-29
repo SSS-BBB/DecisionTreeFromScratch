@@ -106,6 +106,14 @@ void DataList::printDataList(int startIndex, int endIndex)
 	}
 }
 
+void DataList::printUniqueData()
+{
+	for (DataConverter converter : dataConverter)
+	{
+		converter.printUniqueValues();
+	}
+}
+
 void DataList::convertAndPrint()
 {
 	convertAndPrint(0, rearRowIndex);
@@ -197,8 +205,14 @@ void DataList::readCSV(string filePath, string columnsVariableType)
 			float currentDataType = columnDataTypes[i];
 			DataConverter& currentConverter = dataConverter[i];
 
+			// int or float data
 			if (currentVariableType == 'i' || currentVariableType == 'f')
-				currentRow.push_back(stof(currentCell));
+			{
+				float addedValue = stof(currentCell);
+				currentRow.push_back(addedValue);
+				currentConverter.addUniqueValue(addedValue);
+			}
+			// char or string data
 			else if (currentVariableType == 'c' || currentVariableType == 's')
 			{
 				float convertedValue = currentConverter.convert(currentCell);

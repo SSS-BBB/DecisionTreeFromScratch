@@ -21,7 +21,7 @@ public:
 	// store The Actual Datas
 	vector<vector<float>> dataArray;
 
-	// data converter to convert from string to float (null if the column is already int or float)
+	// data converter for each columns to convert from string to float (null if the column is already int or float)
 	vector<DataConverter> dataConverter;
 
 	// 0 or 1 data type (o for categorical data and 1 for numerical data)
@@ -33,9 +33,12 @@ public:
 	int getRowNum();
 
 	void addRow(vector<float> rowData); // Add a row
+
 	void printColumnDataTypes();
 	void printDataList();
 	void printDataList(int startIndex, int endIndex); // Print Data From start to End
+	void printUniqueData();
+
 	void convertAndPrint();
 	void convertAndPrint(int startIndex, int endIndex);
 
