@@ -5,16 +5,18 @@
 #include "DataClasses/DataList/DataList.h"
 #include "TreeClasses/Node/Node.h"
 #include "DataClasses/DataConverter/DataConverter.h"
+#include "TreeClasses/DecisionTreeCreator/DecisionTreeCreator.h"
 
 using namespace std;
 
 void dummyDataTest();
 void readCSVTest();
 void nodeTest();
+void treeCreatorTest();
 
 int main()
 {
-	// readCSVTest();
+	treeCreatorTest();
 	return 0;
 }
 
@@ -122,4 +124,22 @@ void nodeTest()
 	{
 		cout << index << " " << labelsData[index] << endl;
 	}
+}
+
+void treeCreatorTest()
+{
+	// Data
+	const int N = 100;
+	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
+	DataList dataList(N, dataType);
+	dataList.readCSV("data/Employee.csv", "sisiissii");
+
+	DataList featureData = dataList.sliceColumn(0, 7);
+	vector<float> labels = dataList.getColumn(8);
+
+	dataList.printDataList(0, 4);
+
+	// Tree
+	DecisionTreeCreator tree(&featureData, &labels);
+	tree.createTree();
 }

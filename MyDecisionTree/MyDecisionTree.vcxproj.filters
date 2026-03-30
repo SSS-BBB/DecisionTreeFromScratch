@@ -30,6 +30,9 @@
     <ClCompile Include="src\DataClasses\DataConverter\DataConverter.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DataClasses\DataList\DataList.h">
@@ -42,6 +45,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DataClasses\DataConverter\DataConverter.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

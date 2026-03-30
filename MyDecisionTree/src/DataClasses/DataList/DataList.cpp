@@ -46,6 +46,11 @@ int DataList::getRowNum()
 	return rowNum;
 }
 
+int DataList::getRearRowIndex()
+{
+	return rearRowIndex;
+}
+
 void DataList::addRow(vector<float> rowData)
 {
 	// check if datas are full
@@ -356,5 +361,38 @@ int DataList::getColumnDataTypeAt(int columnIndex)
 	}
 
 	return columnDataTypes[columnIndex];
+}
+
+set<float> DataList::getUniqueAtColumn(int columnIndex)
+{
+	if (columnIndex < 0 || columnIndex >= columnNum)
+	{
+		cerr << "index out of bounds, unable to get unique values at column " << columnIndex << endl;
+		set<float> emptyset = {};
+		return emptyset;
+	}
+
+	return uniqueValueColumns[columnIndex];
+}
+
+vector<float> DataList::getColumn(int columnIndex)
+{
+	// get specific column as a vector
+	if (columnIndex < 0 || columnIndex >= columnNum)
+	{
+		cerr << "index out of bounds, unable to get the column " << columnIndex << endl;
+		vector<float> emptyvector = {};
+		return emptyvector;
+	}
+
+	vector<float> columnData;
+	columnData.reserve(rowNum);
+
+	for (int i = 0; i < rowNum; i++)
+	{
+		columnData.push_back(getDataAt(i, columnIndex));
+	}
+
+	return columnData;
 }
 

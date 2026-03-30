@@ -34,6 +34,7 @@ public:
 
 	int getColumnNum();
 	int getRowNum();
+	int getRearRowIndex();
 
 	void addRow(vector<float> rowData); // Add a row
 
@@ -55,4 +56,8 @@ public:
 	void setDataConverter(int index, DataConverter &newDataConverter);
 
 	int getColumnDataTypeAt(int columnIndex);
+
+	set<float> getUniqueAtColumn(int columnIndex);
+
+	vector<float> getColumn(int columnIndex);
 };

@@ -81,5 +81,5 @@ void Node::setRightNode(Node* node)
 
 bool Node::isLeafNode()
 {
-	return leftNode == nullptr && rightNode == nullptr;
+	return (leftNode == nullptr && rightNode == nullptr) || targetColumnIndex < 0;
 }
