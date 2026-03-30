@@ -132,14 +132,15 @@ void treeCreatorTest()
 	const int N = 100;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
-	dataList.readCSV("data/Employee.csv", "sisiissii");
+	dataList.readCSV("data/Employee.csv", "sisiissic"); // make labels column c to convert labels data to 0-n
 
 	DataList featureData = dataList.sliceColumn(0, 7);
 	vector<float> labels = dataList.getColumn(8);
+	set<float> labelUniqueValues = dataList.getUniqueAtColumn(8);
 
-	dataList.printDataList(0, 4);
+	dataList.convertAndPrint();
 
 	// Tree
-	DecisionTreeCreator tree(&featureData, &labels);
+	DecisionTreeCreator tree(&featureData, &labels, labelUniqueValues.size());
 	tree.createTree();
 }

@@ -5,7 +5,7 @@
 DataConverter::DataConverter()
 {
 	convertedDict = {};
-	currentValue = 0;
+	currentValue = -1;
 }
 
 DataConverter::DataConverter(map<string, float> p_convertedDict, float p_currentValue)
@@ -40,10 +40,17 @@ string DataConverter::convertBack(float value)
 	return "No Value!";
 }
 
+int DataConverter::getConvertedSize()
+{
+	return currentValue + 1;
+}
+
+/*
 float DataConverter::getCurrentValue()
 {
 	return currentValue;
 }
+*/
 /*
 void DataConverter::addUniqueValue(float value)
 {

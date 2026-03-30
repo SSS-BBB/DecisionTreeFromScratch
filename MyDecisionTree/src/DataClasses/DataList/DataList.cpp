@@ -155,7 +155,7 @@ void DataList::convertAndPrint(int startIndex, int endIndex)
 		for (int j = 0; j < columnNum; j++)
 		{
 			// only convert the column that has been converted
-			if (dataConverter[j].getCurrentValue() > 0)
+			if (dataConverter[j].getConvertedSize() > 0)
 			{
 				cout << dataConverter[j].convertBack(dataArray[i][j]) << " ";
 			}

@@ -13,8 +13,8 @@ private:
 
 	// set<float> uniqueValues;
 
-	string CURRENT_SAVE_FILE_VERSION = "CVTR 0.3.5";
-	string CURRENT_LOAD_FILE_VERSION = "CVTR 0.3.5";
+	string CURRENT_SAVE_FILE_VERSION = "CVTR 0.4";
+	string CURRENT_LOAD_FILE_VERSION = "CVTR 0.4";
 public:
 	DataConverter();
 	DataConverter(map<string, float> p_convertedDict, float p_currentValue); // initialize with values
@@ -22,7 +22,8 @@ public:
 	float convert(string data);
 	string convertBack(float value);
 
-	float getCurrentValue();
+	// float getCurrentValue();
+	int getConvertedSize();
 
 	// void addUniqueValue(float value);
 	// void printUniqueValues();

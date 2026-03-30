@@ -1,10 +1,12 @@
 #include "DecisionTreeCreator.h"
 #include <iostream>
+#include <cmath>
 
-DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels)
+DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength)
 {
 	featureData = nullptr;
 	labels = nullptr;
+	uniqueValueLength = 0;
 	featureLength = 0;
 	dataLength = 0;
 
@@ -17,9 +19,57 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 
 	featureData = p_featureData;
 	labels = p_labels;
+	uniqueValueLength = p_uniqueValueLength;
 
 	featureLength = featureData->getColumnNum();
 	dataLength = labels->size();
+}
+
+float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
+{
+	if (uniqueValueLength == 0)
+	{
+		cerr << "Unique Value Length is 0, unable to calculate the entropy." << endl;
+		return 0.0f;
+	}
+
+	vector<float> pLabels; // probability for each labels
+	pLabels.reserve(uniqueValueLength);
+
+	// initialize every labels to 0: O(n) where n = uniqueValueLength
+	for (int i = 0; i < uniqueValueLength; i++)
+	{
+		pLabels.push_back(0);
+	}
+
+	// calculate p: O(n) where n = size of row indexes
+	float p = 1.0f / rowIndexes.size();
+	for (int currentRow : rowIndexes)
+	{
+		if (currentRow < 0 || currentRow >= dataLength)
+		{
+			cerr << "Index out of bounds, unable to include entropy for row " << currentRow << endl;
+			continue;
+		}
+
+		float currentLabel = (*labels)[currentRow];
+		if (currentLabel < 0 || currentLabel >= uniqueValueLength)
+		{
+			cerr << "Label column is not converted, unable to include entropy for label " << currentLabel << endl;
+			continue;
+		}
+
+		pLabels[currentLabel] += p;
+	}
+
+	// calculate entropy: O(n) where n = uniqueValueLength
+	float entropy = 0.0f;
+	for (int i = 0; i < uniqueValueLength; i++)
+	{
+		entropy += -(pLabels[i] * log2(pLabels[i]));
+	}
+
+	return entropy;
 }
 
 Node DecisionTreeCreator::findBestNode(vector<int> rowIndexes)
@@ -29,6 +79,9 @@ Node DecisionTreeCreator::findBestNode(vector<int> rowIndexes)
 		cerr << "Feature Data and/or Labels are missing, unable to find the best node." << endl;
 		return Node(-1, -1);
 	}
+
+	float currentEntropy = calculateEntropy(rowIndexes);
+	cout << "Current Entropy: " << currentEntropy << endl;
 
 	// iterate through each features
 	for (int featureIndex = 0; featureIndex < featureLength; featureIndex++)
