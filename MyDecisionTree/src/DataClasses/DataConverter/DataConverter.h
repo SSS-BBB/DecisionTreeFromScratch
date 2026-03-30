@@ -11,10 +11,10 @@ private:
 	map<string, float> convertedDict;
 	float currentValue;
 
-	set<float> uniqueValues;
+	// set<float> uniqueValues;
 
-	string CURRENT_SAVE_FILE_VERSION = "CVTR 0.3";
-	string CURRENT_LOAD_FILE_VERSION = "CVTR 0.3";
+	string CURRENT_SAVE_FILE_VERSION = "CVTR 0.3.5";
+	string CURRENT_LOAD_FILE_VERSION = "CVTR 0.3.5";
 public:
 	DataConverter();
 	DataConverter(map<string, float> p_convertedDict, float p_currentValue); // initialize with values
@@ -24,8 +24,8 @@ public:
 
 	float getCurrentValue();
 
-	void addUniqueValue(float value);
-	void printUniqueValues();
+	// void addUniqueValue(float value);
+	// void printUniqueValues();
 
 	void save(string filepath);
 	void load(string filepath);

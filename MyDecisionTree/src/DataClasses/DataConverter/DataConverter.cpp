@@ -25,7 +25,7 @@ float DataConverter::convert(string data)
 	currentValue++;
 	convertedDict.insert({data, currentValue});
 	// add unique value
-	addUniqueValue(currentValue);
+	// addUniqueValue(currentValue);
 
 	return currentValue;
 }
@@ -44,7 +44,7 @@ float DataConverter::getCurrentValue()
 {
 	return currentValue;
 }
-
+/*
 void DataConverter::addUniqueValue(float value)
 {
 	uniqueValues.insert(value);
@@ -58,6 +58,7 @@ void DataConverter::printUniqueValues()
 	}
 	cout << endl;
 }
+*/
 
 void DataConverter::save(string filepath)
 {
@@ -80,12 +81,14 @@ void DataConverter::save(string filepath)
 	file << currentValue << endl;
 
 	// save unique values
+	/*
 	file << "uniqueValues" << endl;
 	for (float unique : uniqueValues)
 	{
 		file << unique << ",";
 	}
 	file << endl;
+	*/
 
 	// save converted dictionary (map)
 	file << "convertedDict" << endl;
@@ -133,6 +136,7 @@ void DataConverter::load(string filepath)
 	}
 	getline(file, line);
 
+	/*
 	// get unique values
 	if (line == "uniqueValues")
 	{
@@ -146,6 +150,7 @@ void DataConverter::load(string filepath)
 		}
 	}
 	getline(file, line);
+	*/
 
 	// get converted dictionary
 	if (line == "convertedDict")

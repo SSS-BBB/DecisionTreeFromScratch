@@ -8,9 +8,18 @@
 
 using namespace std;
 
+void dummyDataTest();
+void readCSVTest();
+void nodeTest();
+
 int main()
 {
-	/*
+	// readCSVTest();
+	return 0;
+}
+
+void dummyDataTest()
+{
 	vector<int> dummyDataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dummyData(20, dummyDataType);
 
@@ -29,7 +38,10 @@ int main()
 	dummyData.convertAndPrint();
 	cout << "---------------" << endl;
 
+	dummyData.printUniqueData();
+
 	// load converters
+	/*
 	DataConverter loadedConverter0;
 	loadedConverter0.load("saved file/data converters/converter0.cvtr");
 	dummyData.setDataConverter(0, loadedConverter0);
@@ -41,18 +53,34 @@ int main()
 	dummyData.convertAndPrint();
 	dummyData.printUniqueData();
 	*/
+}
 
+void readCSVTest()
+{
 	const int N = 1000;
-	vector<int> dataType = {0, 1, 0, 0, 1, 0, 0, 1, 0};
+	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
 	dataList.readCSV("data/Employee.csv", "sisiissii");
-	// dataList.convertAndPrint();
-	
-	// DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 600);
+
+	DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 600);
+
+	dataList.convertAndPrint(0, 4);
+	dataList.printUniqueData();
+	cout << "--------------" << endl;
+	slicedDataList.convertAndPrint(0, 4);
+	cout << "--------------" << endl;
+	slicedDataList.printUniqueData();
 
 	// save data converter
 	// dataList.saveConverterAt(1, "saved file/data converters/converter1.cvtr");
+}
 
+void nodeTest()
+{
+	const int N = 1000;
+	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
+	DataList dataList(N, dataType);
+	dataList.readCSV("data/Employee.csv", "sisiissii");
 	// node test
 	// create data
 	DataList featureData = dataList.sliceColumn(0, 7);
@@ -66,7 +94,7 @@ int main()
 		labelsData.push_back(-1);
 	}
 
-	vector<int> dataIndexes = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+	vector<int> dataIndexes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 	// create node
 	Node rootNode(2, 3);
@@ -94,8 +122,4 @@ int main()
 	{
 		cout << index << " " << labelsData[index] << endl;
 	}
-	
-
-
-	return 0;
 }

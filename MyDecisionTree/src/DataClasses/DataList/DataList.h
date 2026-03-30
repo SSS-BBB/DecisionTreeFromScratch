@@ -17,7 +17,6 @@ private:
 	// index of the last row
 	int rearRowIndex;
 
-public:
 	// store The Actual Datas
 	vector<vector<float>> dataArray;
 
@@ -27,6 +26,10 @@ public:
 	// 0 or 1 data type (o for categorical data and 1 for numerical data)
 	vector<int> columnDataTypes;
 
+	// unique values for each columns
+	vector<set<float>> uniqueValueColumns;
+
+public:
 	DataList(int p_rowNum, vector<int> p_columnDataTypes);
 
 	int getColumnNum();

@@ -22,10 +22,17 @@ DataList::DataList(int p_rowNum, vector<int> p_columnDataTypes)
 	columnDataTypes.reserve(columnNum);
 	columnDataTypes = p_columnDataTypes;
 
-	// create data converter for each columns
+	// initialize unique value columns with size
+	uniqueValueColumns.reserve(columnNum);
+
+	// create data converter and unique values set for each columns
 	for (int i = 0; i < columnNum; i++)
 	{
+		// create data converter
 		dataConverter.emplace_back(DataConverter());
+		// create unique value set
+		set<float> emptyset = {};
+		uniqueValueColumns.push_back(emptyset);
 	}
 }
 
@@ -58,8 +65,15 @@ void DataList::addRow(vector<float> rowData)
 		return;
 	}
 
-
 	rearRowIndex++;
+
+	// add unique values
+	for (int i = 0; i < columnNum; i++)
+	{
+		uniqueValueColumns[i].insert(rowData[i]);
+	}
+
+	// add rows
 	dataArray.emplace_back(rowData);
 }
 
@@ -108,9 +122,13 @@ void DataList::printDataList(int startIndex, int endIndex)
 
 void DataList::printUniqueData()
 {
-	for (DataConverter converter : dataConverter)
+	for (set<float> uniqueValues : uniqueValueColumns)
 	{
-		converter.printUniqueValues();
+		for (float unique : uniqueValues)
+		{
+			cout << unique << " ";
+		}
+		cout << endl;
 	}
 }
 
@@ -208,13 +226,14 @@ void DataList::readCSV(string filePath, string columnsVariableType)
 			// int or float data
 			if (currentVariableType == 'i' || currentVariableType == 'f')
 			{
+				// add data to the cell
 				float addedValue = stof(currentCell);
 				currentRow.push_back(addedValue);
-				currentConverter.addUniqueValue(addedValue);
 			}
 			// char or string data
 			else if (currentVariableType == 'c' || currentVariableType == 's')
 			{
+				// add data to the cell
 				float convertedValue = currentConverter.convert(currentCell);
 				currentRow.push_back(convertedValue);
 			}
