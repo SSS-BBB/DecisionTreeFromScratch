@@ -24,6 +24,7 @@ public:
 
 	// function to predict the labels from the data
 	void predict(vector<int> rowIndexes, DataList& data, vector<float>& labels);
+	void predictAll(DataList& data, vector<float>& labels);
 
 	// function to split data to left and right array
 	void split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexes, vector<int>& rightIndexes);
@@ -32,4 +33,12 @@ public:
 	void setRightNode(Node* node);
 
 	bool isLeafNode();
+
+	float getTreshold();
+	int getTargetColumn();
+
+	Node getLeftNode();
+	Node getRightNode();
+
+	void printInfo();
 };

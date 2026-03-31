@@ -6,6 +6,7 @@
 #include "TreeClasses/Node/Node.h"
 #include "DataClasses/DataConverter/DataConverter.h"
 #include "TreeClasses/DecisionTreeCreator/DecisionTreeCreator.h"
+#include "Utils/Utils.h"
 
 using namespace std;
 
@@ -17,6 +18,7 @@ void treeCreatorTest();
 int main()
 {
 	treeCreatorTest();
+	// nodeTest();
 	return 0;
 }
 
@@ -89,12 +91,7 @@ void nodeTest()
 	featureData.printDataList(0, 9);
 	featureData.printUniqueData();
 
-	vector<float> labelsData;
-	labelsData.reserve(N);
-	for (int i = 0; i < N; i++)
-	{
-		labelsData.push_back(-1);
-	}
+	vector<float> labelsData = Utils::createFilledArray(N, -1);
 
 	vector<int> dataIndexes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
@@ -116,14 +113,11 @@ void nodeTest()
 	node12.setRightNode(&leafNode1);
 
 	// test node
-	rootNode.predict(dataIndexes, featureData, labelsData);
+	rootNode.predictAll(featureData, labelsData);
 
 	cout << "---------------" << endl;
 	// print labels
-	for (int index : dataIndexes)
-	{
-		cout << index << " " << labelsData[index] << endl;
-	}
+	Utils::printArrayWithIndex(labelsData);
 }
 
 void treeCreatorTest()
@@ -142,5 +136,12 @@ void treeCreatorTest()
 
 	// Tree
 	DecisionTreeCreator tree(&featureData, &labels, labelUniqueValues.size());
-	tree.createTree();
+	Node root = tree.createTree();
+	tree.printNodeMemory();
+	root.getRightNode().printInfo();
+
+	// Test Tree
+	vector<float> labelTest = Utils::createFilledArray(featureData.getRowNum(), -1);
+	root.predictAll(featureData, labelTest);
+	// Utils::printArrayWithIndex(labelTest);
 }

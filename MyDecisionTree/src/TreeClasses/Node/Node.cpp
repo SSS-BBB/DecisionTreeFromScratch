@@ -34,6 +34,12 @@ void Node::predict(vector<int> rowIndexes, DataList& data, vector<float>& labels
 		// set labels
 		for (int index : rowIndexes)
 		{
+			if (treshold != 0 && treshold != 1)
+			{
+				cout << "Error Node:" << endl;
+				printInfo();
+			}
+
 			labels[index] = treshold;
 		}
 		return;
@@ -55,6 +61,16 @@ void Node::predict(vector<int> rowIndexes, DataList& data, vector<float>& labels
 	// go to the next node
 	leftNode->predict(leftIndexArray, data, labels);
 	rightNode->predict(rightIndexArray, data, labels);
+}
+
+void Node::predictAll(DataList& data, vector<float>& labels)
+{
+	vector<int> allIndexes;
+	for (int i = 0; i <= data.getRearRowIndex(); i++)
+	{
+		allIndexes.push_back(i);
+	}
+	predict(allIndexes, data, labels);
 }
 
 void Node::split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexes, vector<int>& rightIndexes)
@@ -93,4 +109,30 @@ void Node::setRightNode(Node* node)
 bool Node::isLeafNode()
 {
 	return (leftNode == nullptr && rightNode == nullptr) || targetColumnIndex < 0;
+}
+
+float Node::getTreshold()
+{
+	return treshold;
+}
+
+int Node::getTargetColumn()
+{
+	return targetColumnIndex;
+}
+
+Node Node::getLeftNode()
+{
+	return *leftNode;
+}
+
+Node Node::getRightNode()
+{
+	return *rightNode;
+}
+
+void Node::printInfo()
+{
+	cout << "Target Column Index: " << targetColumnIndex << endl;
+	cout << "Treshold: " << treshold << endl;
 }
