@@ -33,6 +33,7 @@ public:
 	void setRightNode(Node* node);
 
 	bool isLeafNode();
+	bool isInvalidNode(); // node with one child
 
 	float getTreshold();
 	int getTargetColumn();
@@ -41,4 +42,8 @@ public:
 	Node getRightNode();
 
 	void printInfo();
+
+	void printAllChildren(int level);
+
+	bool operator ==(const Node& otherNode);
 };

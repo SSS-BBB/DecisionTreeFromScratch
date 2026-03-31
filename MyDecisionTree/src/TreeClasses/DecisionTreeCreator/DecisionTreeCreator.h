@@ -24,15 +24,17 @@ private:
 	int featureLength; // lengh of feature from feature data
 	int dataLength; // number of rows from feature and labels data
 	int uniqueValueLength; // how much unique values are in the label
+	int possibleNodeNumber; // number of all possible nodes that can be created with this data
+	int maximumHeight;
 public:
 	DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength);
 
 	float calculateEntropy(vector<int> rowIndexes);
+
 	float findMajorityLabel(vector<int> rowIndexes);
 
 	Node findBestNode(vector<int> rowIndexes, int level);
 	Node createTree();
-
 	NodeInfo findBestFeatureNode(vector<int> rowIndexes, int featureIndex, float currentEntropy);
 
 	void printNodeMemory();

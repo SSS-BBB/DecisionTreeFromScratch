@@ -34,12 +34,6 @@ void Node::predict(vector<int> rowIndexes, DataList& data, vector<float>& labels
 		// set labels
 		for (int index : rowIndexes)
 		{
-			if (treshold != 0 && treshold != 1)
-			{
-				cout << "Error Node:" << endl;
-				printInfo();
-			}
-
 			labels[index] = treshold;
 		}
 		return;
@@ -111,6 +105,11 @@ bool Node::isLeafNode()
 	return (leftNode == nullptr && rightNode == nullptr) || targetColumnIndex < 0;
 }
 
+bool Node::isInvalidNode()
+{
+	return !isLeafNode() && leftNode == nullptr || rightNode == nullptr;
+}
+
 float Node::getTreshold()
 {
 	return treshold;
@@ -135,4 +134,37 @@ void Node::printInfo()
 {
 	cout << "Target Column Index: " << targetColumnIndex << endl;
 	cout << "Treshold: " << treshold << endl;
+}
+
+void Node::printAllChildren(int level)
+{
+	// print current level
+	cout << "Level " << level << endl;
+	printInfo();
+
+	// leaf node
+	if (isLeafNode() || isInvalidNode())
+	{
+		return;
+	}
+
+	
+	// inner node
+	cout << "Left: " << endl;
+	getLeftNode().printInfo();
+
+	cout << "Right: " << endl;
+	getRightNode().printInfo();
+
+	cout << "-------------------" << endl;
+	cout << endl;
+
+	// print next level
+	getLeftNode().printAllChildren(level + 1);
+	getRightNode().printAllChildren(level + 1);
+}
+
+bool Node::operator==(const Node& otherNode)
+{
+	return targetColumnIndex == otherNode.targetColumnIndex && treshold == otherNode.treshold;
 }

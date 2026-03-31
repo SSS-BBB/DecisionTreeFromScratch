@@ -1,3 +1,19 @@
 ﻿  Main.cpp
 C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(138,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+  DecisionTreeCreator.cpp
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(27,27): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(29,35): warning C4244: '=': conversion from 'double' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(30,24): warning C4244: 'argument': conversion from 'double' to 'unsigned __int64', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(65,20): warning C4244: 'initializing': conversion from '_Ty' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(65,20): warning C4244:         with
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(65,20): warning C4244:         [
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(65,20): warning C4244:             _Ty=float
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(65,20): warning C4244:         ]
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(124,20): warning C4244: 'initializing': conversion from '_Ty' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(124,20): warning C4244:         with
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(124,20): warning C4244:         [
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(124,20): warning C4244:             _Ty=float
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(124,20): warning C4244:         ]
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp(140,9): warning C4244: 'return': conversion from 'int' to 'float', possible loss of data
+  Generating Code...
   MyDecisionTree.vcxproj -> C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\x64\Debug\MyDecisionTree.exe

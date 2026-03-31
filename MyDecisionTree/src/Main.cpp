@@ -137,11 +137,11 @@ void treeCreatorTest()
 	// Tree
 	DecisionTreeCreator tree(&featureData, &labels, labelUniqueValues.size());
 	Node root = tree.createTree();
-	tree.printNodeMemory();
-	root.getRightNode().printInfo();
+	// tree.printNodeMemory();
+	// root.printAllChildren(0);
 
 	// Test Tree
 	vector<float> labelTest = Utils::createFilledArray(featureData.getRowNum(), -1);
 	root.predictAll(featureData, labelTest);
-	// Utils::printArrayWithIndex(labelTest);
+	Utils::printArrayWithIndex(labelTest);
 }
