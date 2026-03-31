@@ -22,5 +22,5 @@ public:
 	Node findBestNode(vector<int> rowIndexes);
 	Node createTree();
 
-	Node findBestFeatureNode(vector<int> rowIndexes, int featureIndex);
+	Node findBestFeatureNode(vector<int> rowIndexes, int featureIndex, float currentEntropy, float& outputInformationGain);
 };

@@ -27,6 +27,11 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 
 float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
 {
+	if (rowIndexes.size() == 0)
+	{
+		return 0.0f;
+	}
+
 	if (uniqueValueLength == 0)
 	{
 		cerr << "Unique Value Length is 0, unable to calculate the entropy." << endl;
@@ -66,6 +71,11 @@ float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
 	float entropy = 0.0f;
 	for (int i = 0; i < uniqueValueLength; i++)
 	{
+		if (pLabels[i] == 0)
+		{
+			continue;
+		}
+
 		entropy += -(pLabels[i] * log2(pLabels[i]));
 	}
 
@@ -86,7 +96,9 @@ Node DecisionTreeCreator::findBestNode(vector<int> rowIndexes)
 	// iterate through each features
 	for (int featureIndex = 0; featureIndex < featureLength; featureIndex++)
 	{
-		Node bestFeatureNode = findBestFeatureNode(rowIndexes, featureIndex);
+		float currentFeatureInformationGain;
+		Node bestFeatureNode = findBestFeatureNode(rowIndexes, featureIndex, currentEntropy, currentFeatureInformationGain);
+		cout << "Feature: " << featureIndex << " Information Gain: " << currentFeatureInformationGain << endl;
 	}
 
 	return Node(-1, 1);
@@ -104,23 +116,61 @@ Node DecisionTreeCreator::createTree()
 	return findBestNode(allIndexes);
 }
 
-Node DecisionTreeCreator::findBestFeatureNode(vector<int> rowIndexes, int featureIndex)
+Node DecisionTreeCreator::findBestFeatureNode(vector<int> rowIndexes, int featureIndex, float currentEntropy, float &outputInformationGain)
 {
-	// find best node for specific feature
-	if (featureIndex < 0 || featureIndex >= featureLength)
+	if (rowIndexes.size() == 0)
 	{
-		cerr << "feature index out of bounds, unable to find best node for feature " << featureIndex << endl;
+		cerr << "No data to find the best feature node." << endl;
+		outputInformationGain = -1;
 		return Node(-1, -1);
 	}
 
+	if (featureIndex < 0 || featureIndex >= featureLength)
+	{
+		cerr << "feature index out of bounds, unable to find best node for feature " << featureIndex << endl;
+		outputInformationGain = -1;
+		return Node(-1, -1);
+	}
+
+	// find best node for specific feature
 	// iterate through every unique values of this feature to find the best value node for this feature
 	// the best value node is the node with the most information gain
 	set<float> featureUniqueValues = featureData->getUniqueAtColumn(featureIndex);
+	
+	float bestValue = -1;
+	float maxInformationGain = -INFINITY;
+
 	for (float unique : featureUniqueValues)
 	{
-		cout << unique << " ";
-	}
-	cout << endl;
+		// create node for this unique value
+		Node currentNode(featureIndex, unique);
 
-	return Node(-1, 1);
+		// data split from this node
+		vector<int> leftIndexes = {};
+		vector<int> rightIndexes = {};
+		currentNode.split(rowIndexes, *featureData, leftIndexes, rightIndexes);
+
+		// calculate information gain
+		float wLeft = ((float) leftIndexes.size()) / rowIndexes.size();
+		float entropyLeft = calculateEntropy(leftIndexes);
+
+		float wRight = ((float) rightIndexes.size()) / rowIndexes.size();
+		float entropyRight = calculateEntropy(rightIndexes);
+
+		float entropySum = wLeft*entropyLeft + wRight*entropyRight;
+
+		float currentInformationGain = currentEntropy - entropySum;
+
+		// check max information gain
+		if (currentInformationGain > maxInformationGain)
+		{
+			maxInformationGain = currentInformationGain;
+			bestValue = unique;
+		}
+
+		// cout << "Value: " << unique << " Information Gain: " << currentInformationGain << endl;
+	}
+
+	outputInformationGain = maxInformationGain;
+	return Node(featureIndex, bestValue);
 }

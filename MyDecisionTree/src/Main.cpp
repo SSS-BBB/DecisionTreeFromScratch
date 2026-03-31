@@ -16,8 +16,7 @@ void treeCreatorTest();
 
 int main()
 {
-	// treeCreatorTest();
-	nodeTest();
+	treeCreatorTest();
 	return 0;
 }
 
@@ -130,7 +129,7 @@ void nodeTest()
 void treeCreatorTest()
 {
 	// Data
-	const int N = 5;
+	const int N = 100;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
 	dataList.readCSV("data/Employee.csv", "sisiissic"); // make labels column c to convert labels data to 0-n
