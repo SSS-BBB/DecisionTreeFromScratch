@@ -16,7 +16,8 @@ void treeCreatorTest();
 
 int main()
 {
-	treeCreatorTest();
+	// treeCreatorTest();
+	nodeTest();
 	return 0;
 }
 
@@ -99,11 +100,11 @@ void nodeTest()
 	vector<int> dataIndexes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 	// create node
-	Node rootNode(2, 3);
+	Node rootNode(2, 2);
 	Node node11(1, 2015);
-	Node node12(3, 2);
-	Node leafNode0(8, 0);
-	Node leafNode1(8, 1);
+	Node node12(3, 1);
+	Node leafNode0(-1, 0);
+	Node leafNode1(-1, 1);
 
 	// connect node
 	rootNode.setLeftNode(&node11);
@@ -116,7 +117,7 @@ void nodeTest()
 	node12.setRightNode(&leafNode1);
 
 	// test node
-	rootNode.split(dataIndexes, featureData, labelsData);
+	rootNode.predict(dataIndexes, featureData, labelsData);
 
 	cout << "---------------" << endl;
 	// print labels
@@ -129,7 +130,7 @@ void nodeTest()
 void treeCreatorTest()
 {
 	// Data
-	const int N = 100;
+	const int N = 5;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
 	dataList.readCSV("data/Employee.csv", "sisiissic"); // make labels column c to convert labels data to 0-n

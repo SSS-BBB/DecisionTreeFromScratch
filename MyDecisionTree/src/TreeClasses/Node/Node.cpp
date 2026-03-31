@@ -26,7 +26,7 @@ Node::Node(int p_targetColumnIndex, float p_treshold)
 	rightNode = nullptr;
 }
 
-void Node::split(vector<int> rowIndexes, DataList& data, vector<float>& labels)
+void Node::predict(vector<int> rowIndexes, DataList& data, vector<float>& labels)
 {
 	// leaf node
 	if (isLeafNode())
@@ -50,23 +50,34 @@ void Node::split(vector<int> rowIndexes, DataList& data, vector<float>& labels)
 	vector<int> leftIndexArray;
 	vector<int> rightIndexArray;
 
+	split(rowIndexes, data, leftIndexArray, rightIndexArray);
+
+	// go to the next node
+	leftNode->predict(leftIndexArray, data, labels);
+	rightNode->predict(rightIndexArray, data, labels);
+}
+
+void Node::split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexes, vector<int>& rightIndexes)
+{
 	for (int index : rowIndexes)
 	{
+		if (index < 0 || index > data.getRearRowIndex())
+		{
+			cerr << "Index out of bounds, unable to split data at index " << index << endl;
+			continue;
+		}
+
 		int columnDataType = data.getColumnDataTypeAt(targetColumnIndex);
 		float dataValue = data.getDataAt(index, targetColumnIndex);
 		if (isValueLeft(dataValue, columnDataType))
 		{
-			leftIndexArray.push_back(index);
+			leftIndexes.push_back(index);
 		}
 		else
 		{
-			rightIndexArray.push_back(index);
+			rightIndexes.push_back(index);
 		}
 	}
-
-	// go to the next node
-	leftNode->split(leftIndexArray, data, labels);
-	rightNode->split(rightIndexArray, data, labels);
 }
 
 void Node::setLeftNode(Node* node)

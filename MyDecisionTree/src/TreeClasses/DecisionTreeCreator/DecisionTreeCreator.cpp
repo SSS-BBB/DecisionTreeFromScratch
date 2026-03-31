@@ -52,7 +52,7 @@ float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
 			continue;
 		}
 
-		float currentLabel = (*labels)[currentRow];
+		int currentLabel = (*labels)[currentRow];
 		if (currentLabel < 0 || currentLabel >= uniqueValueLength)
 		{
 			cerr << "Label column is not converted, unable to include entropy for label " << currentLabel << endl;

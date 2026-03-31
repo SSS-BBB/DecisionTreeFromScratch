@@ -22,8 +22,11 @@ public:
 
 	Node(int p_targetColumnIndex, float p_treshold);
 
-	// function to split data to left and right node (if not leaf node)
-	void split(vector<int> rowIndexes, DataList& data, vector<float>& labels);
+	// function to predict the labels from the data
+	void predict(vector<int> rowIndexes, DataList& data, vector<float>& labels);
+
+	// function to split data to left and right array
+	void split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexes, vector<int>& rightIndexes);
 
 	void setLeftNode(Node* node);
 	void setRightNode(Node* node);
