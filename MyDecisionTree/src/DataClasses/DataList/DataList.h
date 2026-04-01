@@ -2,6 +2,7 @@
 // #include "../Data/Data.h"
 #include "../DataConverter/DataConverter.h"
 #include <vector>
+#include <memory>
 
 using namespace std;
 
@@ -18,7 +19,7 @@ private:
 	int rearRowIndex;
 
 	// store The Actual Datas
-	vector<vector<float>> dataArray;
+	unique_ptr<vector<vector<float>>> dataArray;
 
 	// data converter for each columns to convert from string to float (null if the column is already int or float)
 	vector<DataConverter> dataConverter;

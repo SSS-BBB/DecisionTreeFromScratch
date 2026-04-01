@@ -13,7 +13,8 @@ DataList::DataList(int p_rowNum, vector<int> p_columnDataTypes)
 	rearRowIndex = -1;
 
 	// Initialize data array with size
-	dataArray.reserve(rowNum);
+	dataArray = make_unique<vector<vector<float>>>();
+	dataArray->reserve(rowNum);
 
 	// initialize data converter with size
 	dataConverter.reserve(columnNum);
@@ -53,6 +54,13 @@ int DataList::getRearRowIndex()
 
 void DataList::addRow(vector<float> rowData)
 {
+	// check if data array is nullptr
+	if (dataArray == nullptr)
+	{
+		cerr << "Data Array is missing, unable to add a row." << endl;
+		return;
+	}
+
 	// check if datas are full
 	if (rearRowIndex >= rowNum - 1)
 	{
@@ -79,7 +87,7 @@ void DataList::addRow(vector<float> rowData)
 	}
 
 	// add rows
-	dataArray.emplace_back(rowData);
+	dataArray->emplace_back(rowData);
 }
 
 void DataList::printColumnDataTypes()
@@ -104,6 +112,12 @@ void DataList::printDataList()
 
 void DataList::printDataList(int startIndex, int endIndex)
 {
+	if (dataArray == nullptr)
+	{
+		cerr << "Data Array is missing, unable to print data list." << endl;
+		return;
+	}
+
 	int n = endIndex - startIndex + 1;
 	if (n > rowNum || n <= 0 || startIndex >= rowNum || endIndex >= rowNum)
 	{
@@ -115,7 +129,7 @@ void DataList::printDataList(int startIndex, int endIndex)
 	{
 		for (int j = 0; j < columnNum; j++)
 		{
-			cout << dataArray[i][j] << " ";
+			cout << (*dataArray)[i][j] << " ";
 		}
 		cout << endl;
 		if (i == rearRowIndex)
@@ -144,6 +158,12 @@ void DataList::convertAndPrint()
 
 void DataList::convertAndPrint(int startIndex, int endIndex)
 {
+	if (dataArray == nullptr)
+	{
+		cerr << "Data Array is missing, unable to convert and print data list." << endl;
+		return;
+	}
+
 	int n = endIndex - startIndex + 1;
 	if (n > rowNum || n <= 0 || startIndex >= rowNum || endIndex >= rowNum)
 	{
@@ -157,11 +177,11 @@ void DataList::convertAndPrint(int startIndex, int endIndex)
 			// only convert the column that has been converted
 			if (dataConverter[j].getConvertedSize() > 0)
 			{
-				cout << dataConverter[j].convertBack(dataArray[i][j]) << " ";
+				cout << dataConverter[j].convertBack((*dataArray)[i][j]) << " ";
 			}
 			else
 			{
-				cout << dataArray[i][j] << " ";
+				cout << (*dataArray)[i][j] << " ";
 			}
 		}
 		cout << endl;
@@ -255,23 +275,36 @@ void DataList::readCSV(string filePath, string columnsVariableType)
 
 float DataList::getDataAt(int rowIndex, int columnIndex)
 {
-	if (rowIndex >= rowNum || columnIndex >= columnNum || rowIndex < 0 || columnIndex < 0)
+	if (dataArray == nullptr)
 	{
-		cerr << "index out of bounds, unable to obtain data at this index." << endl;
-		cerr << "(" << rowIndex << "," << columnIndex << ")" << endl;
-		return dataArray[0][0];
+		cerr << "Data Array is missing, unable to get data at index " 
+			<< "(" << rowIndex << "," << columnIndex << ")" << endl;
+		return 404;
 	}
 
-	return dataArray[rowIndex][columnIndex];
+	if (rowIndex >= rowNum || columnIndex >= columnNum || rowIndex < 0 || columnIndex < 0)
+	{
+		cerr << "index out of bounds, unable to get data at index."
+		     << "(" << rowIndex << "," << columnIndex << ")" << endl;
+		return (*dataArray)[0][0];
+	}
+
+	return (*dataArray)[rowIndex][columnIndex];
 }
 
 DataList DataList::sliceColumn(int startIndex, int endIndex)
 {
+	if (dataArray == nullptr)
+	{
+		cerr << "Data Array is missing, unable to slice the columns." << endl;
+		return move(*this);
+	}
+
 	int n = endIndex - startIndex + 1; // column length after sliced
 	if (n > columnNum || n <= 0 || startIndex >= columnNum || endIndex >= columnNum)
 	{
 		cerr << "index out of bounds, unable to slice the columns." << endl;
-		return *this;
+		return move(*this);
 	}
 	// create column data types
 	vector<int> droppedColumnDataTypes;
@@ -297,7 +330,7 @@ DataList DataList::sliceColumn(int startIndex, int endIndex)
 		currentSlicedColumn.reserve(n);
 		for (int j = startIndex; j <= endIndex; j++)
 		{
-			currentSlicedColumn.push_back(dataArray[i][j]);
+			currentSlicedColumn.push_back((*dataArray)[i][j]);
 		}
 		dropedDataList.addRow(currentSlicedColumn);
 	}
@@ -307,11 +340,17 @@ DataList DataList::sliceColumn(int startIndex, int endIndex)
 
 DataList DataList::sliceRow(int startIndex, int endIndex)
 {
+	if (dataArray == nullptr)
+	{
+		cerr << "Data Array is missing, unable to slice the rows." << endl;
+		return move(*this);
+	}
+
 	int n = endIndex - startIndex + 1; // row length after sliced
 	if (n > rowNum || n <= 0 || startIndex >= rowNum || endIndex >= rowNum)
 	{
 		cerr << "index out of bounds, unable to slice the rows." << endl;
-		return *this;
+		return move(*this);
 	}
 
 	DataList slicedDataList(n, columnDataTypes);
@@ -324,7 +363,7 @@ DataList DataList::sliceRow(int startIndex, int endIndex)
 
 	for (int i = startIndex; i <= endIndex; i++)
 	{
-		slicedDataList.addRow(dataArray[i]);
+		slicedDataList.addRow((*dataArray)[i]);
 	}
 
 	return slicedDataList;

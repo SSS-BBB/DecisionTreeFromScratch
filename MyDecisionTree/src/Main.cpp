@@ -17,6 +17,7 @@ void treeCreatorTest();
 
 int main()
 {
+	// readCSVTest();
 	treeCreatorTest();
 	// nodeTest();
 	return 0;
@@ -64,8 +65,8 @@ void readCSVTest()
 	const int N = 1000;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
-	dataList.readCSV("data/Employee.csv", "sisiissii");
-
+	dataList.readCSV("data/Employee.csv", "sisiissic");
+	
 	DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 600);
 
 	dataList.convertAndPrint(0, 4);
@@ -74,6 +75,7 @@ void readCSVTest()
 	slicedDataList.convertAndPrint(0, 4);
 	cout << "--------------" << endl;
 	slicedDataList.printUniqueData();
+	
 
 	// save data converter
 	// dataList.saveConverterAt(1, "saved file/data converters/converter1.cvtr");
