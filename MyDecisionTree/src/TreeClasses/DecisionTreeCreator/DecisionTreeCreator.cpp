@@ -10,7 +10,7 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 	featureLength = 0;
 	dataLength = 0;
 	maximumHeight = 0;
-	nodeMemory = {};
+	// nodeMemory = {};
 
 	// data length doesn't match labels length
 	if ((p_featureData->getRearRowIndex() + 1) != p_labels->size())
@@ -27,7 +27,7 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 	dataLength = labels->size();
 
 	maximumHeight = log2(dataLength) + 1;
-	nodeMemory.reserve(pow(2, maximumHeight));
+	// nodeMemory.reserve(pow(2, maximumHeight));
 }
 
 float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
@@ -208,11 +208,11 @@ Node DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int level)
 	Node bestLeftNode = findBestNode(currentBestNodeInfo.leftIndexes, level + 1);
 	Node bestRightNode = findBestNode(currentBestNodeInfo.rightIndexes, level + 1);
 
-	nodeMemory.emplace_back(bestLeftNode);
-	nodeMemory.emplace_back(bestRightNode);
+	// nodeMemory.emplace_back(bestLeftNode);
+	// nodeMemory.emplace_back(bestRightNode);
 
-	bestNode.setLeftNode(&(nodeMemory[nodeMemory.size() - 2]));
-	bestNode.setRightNode(&(nodeMemory[nodeMemory.size() - 1]));
+	// bestNode.setLeftNode(&(nodeMemory[nodeMemory.size() - 2]));
+	// bestNode.setRightNode(&(nodeMemory[nodeMemory.size() - 1]));
 	
 
 	/*
@@ -242,7 +242,7 @@ Node DecisionTreeCreator::createTree()
 
 	Node bestRoot = findBestNode(allIndexes, 0);
 
-	cout << "Node Memory Size = " << nodeMemory.size() << endl;
+	// cout << "Node Memory Size = " << nodeMemory.size() << endl;
 	// bestRoot.printAllChildren(0);
 
 	return bestRoot;
@@ -308,13 +308,4 @@ NodeInfo DecisionTreeCreator::findBestFeatureNode(vector<int> rowIndexes, int fe
 	}
 
 	return bestNodeInfo;
-}
-
-void DecisionTreeCreator::printNodeMemory()
-{
-	for (Node node : nodeMemory)
-	{
-		node.printInfo();
-		cout << "-----------------------" << endl;
-	}
 }

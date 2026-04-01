@@ -19,7 +19,7 @@ class DecisionTreeCreator
 private:
 	DataList* featureData; // no need to manipulate the data so I'll store it as a pointer.
 	vector<float>* labels;
-	vector<Node> nodeMemory; // store all nodes in the tree here to make the program remembers all the nodes.
+	// vector<Node> nodeMemory; // store all nodes in the tree here to make the program remembers all the nodes.
 	
 	int featureLength; // lengh of feature from feature data
 	int dataLength; // number of rows from feature and labels data
@@ -36,6 +36,4 @@ public:
 	Node findBestNode(vector<int> rowIndexes, int level);
 	Node createTree();
 	NodeInfo findBestFeatureNode(vector<int> rowIndexes, int featureIndex, float currentEntropy);
-
-	void printNodeMemory();
 };

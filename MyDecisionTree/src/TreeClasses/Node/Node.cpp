@@ -22,8 +22,6 @@ Node::Node(int p_targetColumnIndex, float p_treshold)
 {
 	targetColumnIndex = p_targetColumnIndex;
 	treshold = p_treshold;
-	leftNode = nullptr;
-	rightNode = nullptr;
 }
 
 void Node::predict(vector<int> rowIndexes, DataList& data, vector<float>& labels)
@@ -90,14 +88,38 @@ void Node::split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexe
 	}
 }
 
-void Node::setLeftNode(Node* node)
+void Node::setLeftNode(unique_ptr<Node> &node)
 {
-	leftNode = node;
+	leftNode = move(node);
 }
 
-void Node::setRightNode(Node* node)
+void Node::setRightNode(unique_ptr<Node> &node)
 {
-	rightNode = node;
+	rightNode = move(node);
+}
+
+unique_ptr<Node>& Node::getLeftNode()
+{
+	if (leftNode == nullptr)
+	{
+		cerr << "No left node in this node." << endl;
+		unique_ptr<Node> empty;
+		return empty;
+	}
+
+	return leftNode;
+}
+
+unique_ptr<Node>& Node::getRightNode()
+{
+	if (rightNode == nullptr)
+	{
+		cerr << "No right node in this node." << endl;
+		unique_ptr<Node> empty;
+		return empty;
+	}
+
+	return rightNode;
 }
 
 bool Node::isLeafNode()
@@ -118,16 +140,6 @@ float Node::getTreshold()
 int Node::getTargetColumn()
 {
 	return targetColumnIndex;
-}
-
-Node Node::getLeftNode()
-{
-	return *leftNode;
-}
-
-Node Node::getRightNode()
-{
-	return *rightNode;
 }
 
 void Node::printInfo()
@@ -151,20 +163,15 @@ void Node::printAllChildren(int level)
 	
 	// inner node
 	cout << "Left: " << endl;
-	getLeftNode().printInfo();
+	leftNode->printInfo();
 
 	cout << "Right: " << endl;
-	getRightNode().printInfo();
+	rightNode->printInfo();
 
 	cout << "-------------------" << endl;
 	cout << endl;
 
 	// print next level
-	getLeftNode().printAllChildren(level + 1);
-	getRightNode().printAllChildren(level + 1);
-}
-
-bool Node::operator==(const Node& otherNode)
-{
-	return targetColumnIndex == otherNode.targetColumnIndex && treshold == otherNode.treshold;
+	leftNode->printAllChildren(level + 1);
+	rightNode->printAllChildren(level + 1);
 }

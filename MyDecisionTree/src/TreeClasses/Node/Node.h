@@ -1,5 +1,6 @@
 #pragma once
 #include <string>
+#include <memory>
 #include "../../DataClasses/DataList/DataList.h"
 
 using namespace std;
@@ -13,8 +14,8 @@ private:
 	int targetColumnIndex;
 
 	// next node
-	Node* leftNode;
-	Node* rightNode;
+	unique_ptr<Node> leftNode;
+	unique_ptr<Node> rightNode;
 
 	bool isValueLeft(float value, int columnDataType); // check if the value should go to the left node
 
@@ -29,8 +30,11 @@ public:
 	// function to split data to left and right array
 	void split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexes, vector<int>& rightIndexes);
 
-	void setLeftNode(Node* node);
-	void setRightNode(Node* node);
+	void setLeftNode(unique_ptr<Node> &node);
+	void setRightNode(unique_ptr<Node> &node);
+
+	unique_ptr<Node>& getLeftNode();
+	unique_ptr<Node>& getRightNode();
 
 	bool isLeafNode();
 	bool isInvalidNode(); // node with one child
@@ -38,12 +42,7 @@ public:
 	float getTreshold();
 	int getTargetColumn();
 
-	Node getLeftNode();
-	Node getRightNode();
-
 	void printInfo();
 
 	void printAllChildren(int level);
-
-	bool operator ==(const Node& otherNode);
 };

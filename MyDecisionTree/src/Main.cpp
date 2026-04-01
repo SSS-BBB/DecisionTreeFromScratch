@@ -1,6 +1,7 @@
 #include <iostream>
 #include <ctime>
 #include <string>
+#include <memory>
 #include "DataClasses/Data/Data.h"
 #include "DataClasses/DataList/DataList.h"
 #include "TreeClasses/Node/Node.h"
@@ -18,8 +19,8 @@ void treeCreatorTest();
 int main()
 {
 	// readCSVTest();
-	treeCreatorTest();
-	// nodeTest();
+	// treeCreatorTest();
+	nodeTest();
 	return 0;
 }
 
@@ -86,7 +87,7 @@ void nodeTest()
 	const int N = 1000;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
-	dataList.readCSV("data/Employee.csv", "sisiissii");
+	dataList.readCSV("data/Employee.csv", "sisiissic");
 	// node test
 	// create data
 	DataList featureData = dataList.sliceColumn(0, 7);
@@ -98,24 +99,26 @@ void nodeTest()
 	vector<int> dataIndexes = { 0, 1, 2, 3, 4, 5, 6, 7, 8, 9 };
 
 	// create node
-	Node rootNode(2, 2);
-	Node node11(1, 2015);
-	Node node12(3, 1);
-	Node leafNode0(-1, 0);
-	Node leafNode1(-1, 1);
+	unique_ptr<Node> rootNode = make_unique<Node>(2, 2);
+	unique_ptr<Node> node11 = make_unique<Node>(1, 2015);
+	unique_ptr<Node> node12 = make_unique<Node>(3, 1);
+	unique_ptr<Node> leafNode21 = make_unique<Node>(-1, 0);
+	unique_ptr<Node> leafNode22 = make_unique<Node>(-1, 1);
+	unique_ptr<Node> leafNode23 = make_unique<Node>(-1, 0);
+	unique_ptr<Node> leafNode24 = make_unique<Node>(-1, 1);
 
 	// connect node
-	rootNode.setLeftNode(&node11);
-	rootNode.setRightNode(&node12);
+	rootNode->setLeftNode(node11);
+	rootNode->setRightNode(node12);
 
-	node11.setLeftNode(&leafNode0);
-	node11.setRightNode(&leafNode1);
+	rootNode->getLeftNode()->setLeftNode(leafNode21);
+	rootNode->getLeftNode()->setRightNode(leafNode22);
 
-	node12.setLeftNode(&leafNode0);
-	node12.setRightNode(&leafNode1);
+	rootNode->getRightNode()->setLeftNode(leafNode23);
+	rootNode->getRightNode()->setRightNode(leafNode24);
 
 	// test node
-	rootNode.predictAll(featureData, labelsData);
+	rootNode->predictAll(featureData, labelsData);
 
 	cout << "---------------" << endl;
 	// print labels
