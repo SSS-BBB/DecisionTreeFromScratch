@@ -27,7 +27,7 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 
 	if (p_maximumHeight <= 0)
 	{
-		maximumHeight = log2(dataLength) + 1;
+		maximumHeight = dataLength + 1;
 	}
 	else
 	{
@@ -189,11 +189,21 @@ unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int l
 		float nodeLabel = (*labels)[rowIndexes[0]];
 		cout << "Reached Entropy = 0" << endl;
 		cout << "Node Label = " << nodeLabel << endl;
+
 		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
 		return leafNode;
 	}
 
-	// TODO: reach maximum height
+	// reach maximum height
+	if (level + 1 > maximumHeight)
+	{
+		float nodeLabel = findMajorityLabel(rowIndexes);
+		cout << "Reached Maximum Height" << endl;
+		cout << "Node Label = " << nodeLabel << endl;
+
+		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
+		return leafNode;
+	}
 
 	// inner node
 	vector<int> empty = {};
