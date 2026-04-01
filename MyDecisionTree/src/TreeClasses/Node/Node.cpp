@@ -88,12 +88,12 @@ void Node::split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexe
 	}
 }
 
-void Node::setLeftNode(unique_ptr<Node> &node)
+void Node::setLeftNode(unique_ptr<Node> node)
 {
 	leftNode = move(node);
 }
 
-void Node::setRightNode(unique_ptr<Node> &node)
+void Node::setRightNode(unique_ptr<Node> node)
 {
 	rightNode = move(node);
 }

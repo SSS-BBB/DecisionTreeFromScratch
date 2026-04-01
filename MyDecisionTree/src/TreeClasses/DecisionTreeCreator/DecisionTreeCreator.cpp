@@ -2,7 +2,7 @@
 #include <iostream>
 #include <cmath>
 
-DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength)
+DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength, int p_maximumHeight)
 {
 	featureData = nullptr;
 	labels = nullptr;
@@ -10,7 +10,6 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 	featureLength = 0;
 	dataLength = 0;
 	maximumHeight = 0;
-	// nodeMemory = {};
 
 	// data length doesn't match labels length
 	if ((p_featureData->getRearRowIndex() + 1) != p_labels->size())
@@ -26,12 +25,29 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 	featureLength = featureData->getColumnNum();
 	dataLength = labels->size();
 
-	maximumHeight = log2(dataLength) + 1;
-	// nodeMemory.reserve(pow(2, maximumHeight));
+	if (p_maximumHeight <= 0)
+	{
+		maximumHeight = log2(dataLength) + 1;
+	}
+	else
+	{
+		maximumHeight = p_maximumHeight;
+	}
+}
+
+DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength) : DecisionTreeCreator(p_featureData, p_labels, p_uniqueValueLength, -1)
+{
+	
 }
 
 float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
 {
+	if (labels == nullptr)
+	{
+		cerr << "Label Array is missing, unable to calculate entropy." << endl;
+		return 0.0f;
+	}
+
 	if (rowIndexes.size() == 0)
 	{
 		return 0.0f;
@@ -89,6 +105,12 @@ float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
 
 float DecisionTreeCreator::findMajorityLabel(vector<int> rowIndexes)
 {
+	if (labels == nullptr)
+	{
+		cerr << "Label Array is missing, unable to find majority label." << endl;
+		return 0.0f;
+	}
+
 	if (rowIndexes.size() == 0)
 	{
 		cerr << "Row indexes are empty, unable to find the majority label." << endl;
@@ -140,18 +162,20 @@ float DecisionTreeCreator::findMajorityLabel(vector<int> rowIndexes)
 	return majorityLabel;
 }
 
-Node DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int level)
+unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int level)
 {
 	if (rowIndexes.size() == 0)
 	{
 		cerr << "Level: " << level << " No data to find the best node." << endl;
-		return Node(-1, -1);
+		unique_ptr<Node> errorNode = make_unique<Node>(-1, -1);
+		return errorNode;
 	}
 
 	if (featureData == nullptr || labels == nullptr)
 	{
 		cerr << "Feature Data and/or Labels are missing, unable to find the best node." << endl;
-		return Node(-1, -1);
+		unique_ptr<Node> errorNode = make_unique<Node>(-1, -1);
+		return errorNode;
 	}
 
 	float currentEntropy = calculateEntropy(rowIndexes);
@@ -165,7 +189,7 @@ Node DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int level)
 		float nodeLabel = (*labels)[rowIndexes[0]];
 		cout << "Reached Entropy = 0" << endl;
 		cout << "Node Label = " << nodeLabel << endl;
-		Node leafNode(-1, nodeLabel);
+		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
 		return leafNode;
 	}
 
@@ -200,38 +224,18 @@ Node DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int level)
 		cout << "Cannot split more node" << endl;
 		float nodeLabel = findMajorityLabel(rowIndexes);
 		cout << "Node Label = " << nodeLabel << endl;
-		Node leafNode(-1, nodeLabel);
+		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
 		return leafNode;
 	}
 
-	Node bestNode(currentBestNodeInfo.featureIndex, currentBestNodeInfo.value);
-	Node bestLeftNode = findBestNode(currentBestNodeInfo.leftIndexes, level + 1);
-	Node bestRightNode = findBestNode(currentBestNodeInfo.rightIndexes, level + 1);
-
-	// nodeMemory.emplace_back(bestLeftNode);
-	// nodeMemory.emplace_back(bestRightNode);
-
-	// bestNode.setLeftNode(&(nodeMemory[nodeMemory.size() - 2]));
-	// bestNode.setRightNode(&(nodeMemory[nodeMemory.size() - 1]));
-	
-
-	/*
-	bestNode.setLeftNode(&bestLeftNode);
-	bestNode.setRightNode(&bestRightNode);
-	*/
-
-	/*
-	cout << "--------------------" << endl;
-	cout << "Level " << level << " Completed" << endl;
-	cout << "Left Feature Index = " << bestLeftNode.getTargetColumn() << endl;
-	cout << "Left Value = " << bestLeftNode.getTreshold() << endl;
-	cout << "--------------------" << endl;
-	*/
+	unique_ptr<Node> bestNode = make_unique<Node>(currentBestNodeInfo.featureIndex, currentBestNodeInfo.value);
+	bestNode->setLeftNode(findBestNode(currentBestNodeInfo.leftIndexes, level + 1));
+	bestNode->setRightNode(findBestNode(currentBestNodeInfo.rightIndexes, level + 1));
 
 	return bestNode;
 }
 
-Node DecisionTreeCreator::createTree()
+unique_ptr<Node> DecisionTreeCreator::createTree()
 {
 	// row indexes from first to last
 	vector<int> allIndexes;
@@ -240,10 +244,7 @@ Node DecisionTreeCreator::createTree()
 		allIndexes.push_back(i);
 	}
 
-	Node bestRoot = findBestNode(allIndexes, 0);
-
-	// cout << "Node Memory Size = " << nodeMemory.size() << endl;
-	// bestRoot.printAllChildren(0);
+	unique_ptr<Node> bestRoot = findBestNode(allIndexes, 0);
 
 	return bestRoot;
 }
@@ -303,8 +304,6 @@ NodeInfo DecisionTreeCreator::findBestFeatureNode(vector<int> rowIndexes, int fe
 			bestNodeInfo.leftIndexes = leftIndexes;
 			bestNodeInfo.rightIndexes = rightIndexes;
 		}
-
-		// cout << "Value: " << unique << " Information Gain: " << currentInformationGain << endl;
 	}
 
 	return bestNodeInfo;

@@ -19,8 +19,8 @@ void treeCreatorTest();
 int main()
 {
 	// readCSVTest();
-	// treeCreatorTest();
-	nodeTest();
+	treeCreatorTest();
+	// nodeTest();
 	return 0;
 }
 
@@ -108,14 +108,14 @@ void nodeTest()
 	unique_ptr<Node> leafNode24 = make_unique<Node>(-1, 1);
 
 	// connect node
-	rootNode->setLeftNode(node11);
-	rootNode->setRightNode(node12);
+	rootNode->setLeftNode(make_unique<Node>(1, 2015));
+	rootNode->setRightNode(make_unique<Node>(3, 1));
 
-	rootNode->getLeftNode()->setLeftNode(leafNode21);
-	rootNode->getLeftNode()->setRightNode(leafNode22);
+	rootNode->getLeftNode()->setLeftNode(make_unique<Node>(-1, 0));
+	rootNode->getLeftNode()->setRightNode(make_unique<Node>(-1, 1));
 
-	rootNode->getRightNode()->setLeftNode(leafNode23);
-	rootNode->getRightNode()->setRightNode(leafNode24);
+	rootNode->getRightNode()->setLeftNode(make_unique<Node>(-1, 0));
+	rootNode->getRightNode()->setRightNode(make_unique<Node>(-1, 1));
 
 	// test node
 	rootNode->predictAll(featureData, labelsData);
@@ -141,12 +141,12 @@ void treeCreatorTest()
 
 	// Tree
 	DecisionTreeCreator tree(&featureData, &labels, labelUniqueValues.size());
-	Node root = tree.createTree();
+	unique_ptr<Node> root = move(tree.createTree());
 	// tree.printNodeMemory();
 	// root.printAllChildren(0);
 
 	// Test Tree
 	vector<float> labelTest = Utils::createFilledArray(featureData.getRowNum(), -1);
-	root.predictAll(featureData, labelTest);
+	root->predictAll(featureData, labelTest);
 	Utils::printArrayWithIndex(labelTest);
 }

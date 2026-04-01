@@ -30,8 +30,8 @@ public:
 	// function to split data to left and right array
 	void split(vector<int> rowIndexes, DataList& data, vector<int>& leftIndexes, vector<int>& rightIndexes);
 
-	void setLeftNode(unique_ptr<Node> &node);
-	void setRightNode(unique_ptr<Node> &node);
+	void setLeftNode(unique_ptr<Node> node);
+	void setRightNode(unique_ptr<Node> node);
 
 	unique_ptr<Node>& getLeftNode();
 	unique_ptr<Node>& getRightNode();
