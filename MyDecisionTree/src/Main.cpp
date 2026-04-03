@@ -8,6 +8,7 @@
 #include "TreeClasses/DecisionTreeCreator/DecisionTreeCreator.h"
 #include "Utils/Utils.h"
 #include "Evaluator/LabelEvaluator/LabelEvaluator.h"
+#include "DataClasses/DataManager/DataManager.h"
 
 using namespace std;
 
@@ -15,12 +16,14 @@ void dummyDataTest();
 void readCSVTest();
 void nodeTest();
 void treeCreatorTest();
+void trainTestSplitTest();
 
 int main()
 {
 	// readCSVTest();
-	treeCreatorTest();
+	// treeCreatorTest();
 	// nodeTest();
+	trainTestSplitTest();
 	return 0;
 }
 
@@ -152,4 +155,41 @@ void treeCreatorTest()
 
 	// Test Results
 	vector<vector<float>> confusionMatrix = LabelEvaluator::confusionMatrix(labelTest, labels, labelUniqueValues.size());
+}
+
+void trainTestSplitTest()
+{
+	// get data from file
+	const int N = 1000;
+	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
+	DataList data(N, dataType);
+	data.readCSV("data/Employee.csv", "sisiissic");
+	cout << "Data:" << endl;
+	data.printDataList(0, 4);
+
+	// train test split
+	DataList xTrain;
+	DataList xTest;
+	vector<float> yTrain;
+	vector<float> yTest;
+	DataManager::trainTestSplit(data, 0.2, xTrain, xTest, yTrain, yTest);
+
+	cout << "X Train:" << endl;
+	xTrain.printDataList(0, 4);
+	cout << "X Test:" << endl;
+	xTest.printDataList(0, 4);
+
+	cout << "Y Train" << endl;
+	for (int i = 0; i <= 4; i++)
+	{
+		cout << yTrain[i] << endl;
+	}
+	cout << "Label Size = " << yTrain.size() << endl;
+
+	cout << "Y Test" << endl;
+	for (int i = 0; i <= 4; i++)
+	{
+		cout << yTest[i] << endl;
+	}
+	cout << "Label Size = " << yTest.size() << endl;
 }

@@ -32,6 +32,7 @@ private:
 
 public:
 	DataList(int p_rowNum, vector<int> p_columnDataTypes);
+	DataList();
 
 	int getColumnNum();
 	int getRowNum();

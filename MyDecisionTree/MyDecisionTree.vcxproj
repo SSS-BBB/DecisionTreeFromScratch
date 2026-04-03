@@ -123,6 +123,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\DataClasses\DataManager\DataManager.cpp" />
     <ClCompile Include="src\Evaluator\LabelEvaluator\LabelEvaluator.cpp" />
     <ClCompile Include="src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.cpp" />
     <ClCompile Include="src\DataClasses\DataConverter\DataConverter.cpp" />
@@ -132,6 +133,7 @@
     <ClCompile Include="src\Utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\DataClasses\DataManager\DataManager.h" />
     <ClInclude Include="src\Evaluator\LabelEvaluator\LabelEvaluator.h" />
     <ClInclude Include="src\TreeClasses\DecisionTreeCreator\DecisionTreeCreator.h" />
     <ClInclude Include="src\DataClasses\DataConverter\DataConverter.h" />

@@ -37,6 +37,11 @@ DataList::DataList(int p_rowNum, vector<int> p_columnDataTypes)
 	}
 }
 
+DataList::DataList() : DataList(0, {})
+{
+
+}
+
 int DataList::getColumnNum()
 {
 	return columnNum;
@@ -92,6 +97,7 @@ void DataList::addRow(vector<float> rowData)
 
 void DataList::printColumnDataTypes()
 {
+	cout << "Column Data Type:" << endl;
 	for (int j = 0; j < columnNum; j++)
 	{
 		cout << columnDataTypes[j] << " ";
@@ -137,6 +143,8 @@ void DataList::printDataList(int startIndex, int endIndex)
 			printColumnDataTypes();
 		}
 	}
+
+	cout << "Data Size = " << rowNum << endl;
 }
 
 void DataList::printUniqueData()

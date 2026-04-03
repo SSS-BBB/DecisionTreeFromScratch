@@ -36,6 +36,9 @@
     <ClCompile Include="src\Evaluator\LabelEvaluator\LabelEvaluator.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\DataClasses\DataManager\DataManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DataClasses\DataList\DataList.h">
@@ -54,6 +57,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Evaluator\LabelEvaluator\LabelEvaluator.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\DataClasses\DataManager\DataManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
