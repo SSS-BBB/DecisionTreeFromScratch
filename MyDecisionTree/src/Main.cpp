@@ -2,12 +2,12 @@
 #include <ctime>
 #include <string>
 #include <memory>
-#include "DataClasses/Data/Data.h"
 #include "DataClasses/DataList/DataList.h"
 #include "TreeClasses/Node/Node.h"
 #include "DataClasses/DataConverter/DataConverter.h"
 #include "TreeClasses/DecisionTreeCreator/DecisionTreeCreator.h"
 #include "Utils/Utils.h"
+#include "Evaluator/LabelEvaluator/LabelEvaluator.h"
 
 using namespace std;
 
@@ -145,8 +145,11 @@ void treeCreatorTest()
 	// tree.printNodeMemory();
 	// root.printAllChildren(0);
 
-	// Test Tree
+	// Predict using Tree
 	vector<float> labelTest = Utils::createFilledArray(featureData.getRowNum(), -1);
 	root->predictAll(featureData, labelTest);
 	Utils::printArrayWithIndex(labelTest);
+
+	// Test Results
+	vector<vector<float>> confusionMatrix = LabelEvaluator::confusionMatrix(labelTest, labels, labelUniqueValues.size());
 }
