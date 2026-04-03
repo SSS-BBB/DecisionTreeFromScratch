@@ -192,4 +192,14 @@ void trainTestSplitTest()
 		cout << yTest[i] << endl;
 	}
 	cout << "Label Size = " << yTest.size() << endl;
+
+	// create tree from training data
+	int labelNum = data.getUniqueAtColumn(8).size();
+	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
+	unique_ptr<Node> root = move(tree.createTree());
+	
+	// predict test data
+	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
+	root->predictAll(xTest, yPred);
+	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
 }

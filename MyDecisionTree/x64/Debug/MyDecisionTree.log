@@ -5,6 +5,7 @@ C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree
 C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(146,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(157,115): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
 C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(175,36): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(197,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         with
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         [
