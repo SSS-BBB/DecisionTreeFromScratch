@@ -59,7 +59,54 @@ vector<vector<float>> LabelEvaluator::confusionMatrix(vector<float> predictedLab
     }
 
     // print info from the confusion matrix
-    
+    // Accuracy
+    float accuracy = 0.0f;
+    for (int i = 0; i < labelNum; i++)
+    {
+        // diagonal
+        accuracy += confusionMatrix[i][i];
+    }
+    cout << "Accuracy = " << accuracy << endl;
+
+    // Precision
+    vector<float> precision;
+    precision.reserve(labelNum);
+    for (int i = 0; i < labelNum; i++)
+    {
+        // nominator
+        precision.push_back(confusionMatrix[i][i]);
+        // denominator
+        float denominator = 0.0f;
+        for (int j = 0; j < labelNum; j++)
+        {
+            denominator += confusionMatrix[j][i];
+        }
+        precision[i] /= denominator;
+    }
+
+    // Recall
+    vector<float> recall;
+    recall.reserve(labelNum);
+    for (int i = 0; i < labelNum; i++)
+    {
+        // nominator
+        recall.push_back(confusionMatrix[i][i]);
+        // denominator
+        float denominator = 0.0f;
+        for (int j = 0; j < labelNum; j++)
+        {
+            denominator += confusionMatrix[i][j];
+        }
+        recall[i] /= denominator;
+    }
+
+    // print precision and recall
+    for (int i = 0; i < labelNum; i++)
+    {
+        // print precision
+        cout << i << ": " << "precision = " << precision[i] << ", " <<
+            "recall = " << recall[i] << endl;
+    }
 
     return confusionMatrix;
 }
