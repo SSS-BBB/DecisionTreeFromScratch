@@ -39,6 +39,9 @@
     <ClCompile Include="src\DataClasses\DataManager\DataManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\TreeClasses\TreeFileManager\TreeFileManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DataClasses\DataList\DataList.h">
@@ -60,6 +63,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\DataClasses\DataManager\DataManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\TreeClasses\TreeFileManager\TreeFileManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

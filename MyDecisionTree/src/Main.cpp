@@ -9,6 +9,7 @@
 #include "Utils/Utils.h"
 #include "Evaluator/LabelEvaluator/LabelEvaluator.h"
 #include "DataClasses/DataManager/DataManager.h"
+#include "TreeClasses/TreeFileManager/TreeFileManager.h"
 
 using namespace std;
 
@@ -17,13 +18,11 @@ void readCSVTest();
 void nodeTest();
 void treeCreatorTest();
 void trainTestSplitTest();
+void nodeFileTest();
 
 int main()
 {
-	// readCSVTest();
-	// treeCreatorTest();
-	// nodeTest();
-	trainTestSplitTest();
+	nodeFileTest();
 	return 0;
 }
 
@@ -160,7 +159,7 @@ void treeCreatorTest()
 void trainTestSplitTest()
 {
 	// get data from file
-	const int N = 1000;
+	const int N = 3000;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList data(N, dataType);
 	data.readCSV("data/Employee.csv", "sisiissic");
@@ -202,4 +201,32 @@ void trainTestSplitTest()
 	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
 	root->predictAll(xTest, yPred);
 	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
+}
+
+void nodeFileTest()
+{
+	// Test Save and Load System of Node
+
+	// create node
+	unique_ptr<Node> rootNode = make_unique<Node>(2, 2);
+	unique_ptr<Node> node11 = make_unique<Node>(1, 2015);
+	unique_ptr<Node> node12 = make_unique<Node>(3, 1);
+	unique_ptr<Node> leafNode21 = make_unique<Node>(-1, 0);
+	unique_ptr<Node> leafNode22 = make_unique<Node>(-1, 1);
+	unique_ptr<Node> leafNode23 = make_unique<Node>(-1, 0);
+	unique_ptr<Node> leafNode24 = make_unique<Node>(-1, 1);
+
+	// connect node
+	rootNode->setLeftNode(make_unique<Node>(1, 2015));
+	rootNode->setRightNode(make_unique<Node>(3, 1));
+
+	rootNode->getLeftNode()->setLeftNode(make_unique<Node>(-1, 0));
+	rootNode->getLeftNode()->setRightNode(make_unique<Node>(-1, 1));
+
+	rootNode->getRightNode()->setLeftNode(make_unique<Node>(-1, 0));
+	rootNode->getRightNode()->setRightNode(make_unique<Node>(-1, 1));
+
+	// save node
+	TreeFileManager treeFileManager("saved file/trees/test.tree");
+	treeFileManager.saveTree(*rootNode);
 }

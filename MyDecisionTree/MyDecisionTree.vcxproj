@@ -131,6 +131,7 @@
     <ClCompile Include="src\DataClasses\DataList\DataList.cpp" />
     <ClCompile Include="src\Main.cpp" />
     <ClCompile Include="src\Utils\Utils.cpp" />
+    <ClCompile Include="src\TreeClasses\TreeFileManager\TreeFileManager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\DataClasses\DataManager\DataManager.h" />
@@ -140,6 +141,7 @@
     <ClInclude Include="src\TreeClasses\Node\Node.h" />
     <ClInclude Include="src\DataClasses\DataList\DataList.h" />
     <ClInclude Include="src\Utils\Utils.h" />
+    <ClInclude Include="src\TreeClasses\TreeFileManager\TreeFileManager.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
