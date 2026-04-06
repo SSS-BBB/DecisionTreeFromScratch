@@ -3,22 +3,39 @@
 
 bool TreeFileManager::saveNode(ofstream& file, Node& node, int id)
 {
+	// check invalid node
+	if (node.isInvalidNode())
+	{
+		cerr << "Node is invalid, unable to save this node." << endl;
+		return false;
+	}
+
 	// save current node
 	string line = "";
 	line += "(";
 	line += to_string(id) + "," + to_string(node.getTreshold()) + "," 
 		+ to_string(node.getTargetColumn()) + ",";
 
+	// check leaf node
+	if (node.isLeafNode())
+	{
+		line += "-1,-1";
+		line += ")";
+		file << line << endl;
+		return true;
+	}
+
+	// save left and right node
 	int leftId = getNewId();
 	int rightId = getNewId();
 	line += to_string(leftId) + "," + to_string(rightId);
 	line += ")";
-	file << line;
-	file << endl;
+	file << line << endl;
 
-	// save left and right node
+	bool leftStatus = saveNode(file, *node.getLeftNode(), leftId);
+	bool rightStatus = saveNode(file, *node.getRightNode(), rightId);
 
-	return true;
+	return leftStatus && rightStatus;
 }
 
 int TreeFileManager::getNewId()
@@ -54,10 +71,14 @@ void TreeFileManager::saveTree(Node& root)
 	if (saveStatus)
 	{
 		// save successfully
+		file << "END";
 		cout << "Tree File has been saved successfully at " << path << endl;
 	}
 	else
 	{
 		cerr << "Something went wrong while saving node." << endl;
 	}
+
+	// reset id
+	currentId = -1;
 }

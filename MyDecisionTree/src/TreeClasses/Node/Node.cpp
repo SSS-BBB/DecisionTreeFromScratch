@@ -129,7 +129,7 @@ bool Node::isLeafNode()
 
 bool Node::isInvalidNode()
 {
-	return !isLeafNode() && leftNode == nullptr || rightNode == nullptr;
+	return !isLeafNode() && (leftNode == nullptr || rightNode == nullptr);
 }
 
 float Node::getTreshold()
