@@ -2,12 +2,13 @@
 C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\DataClasses\DataManager\DataManager.h(2,10): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   (compiling source file 'src/Main.cpp')
   
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(146,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(157,115): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(175,36): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(197,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(254,36): warning C4305: 'argument': truncation from 'double' to 'float'
-C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(256,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(148,72): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(159,115): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(177,36): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(199,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(260,36): warning C4305: 'argument': truncation from 'double' to 'float'
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(262,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
+C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(286,15): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         with
 C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56): warning C4244:         [
@@ -16,7 +17,7 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.3520
   (compiling source file 'src/Main.cpp')
       C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.44.35207\include\memory(3630,56):
       the template instantiation context (the oldest one first) is
-          C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(105,30):
+          C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\MyDecisionTree\src\Main.cpp(107,30):
           see reference to function template instantiation 'std::unique_ptr<Node,std::default_delete<Node>> std::make_unique<Node,int,int,0>(int &&,int &&)' being compiled
   
   MyDecisionTree.vcxproj -> C:\Programming\C++\Projects\DecisionTrees\DecisionTreeFromScratch\x64\Debug\MyDecisionTree.exe

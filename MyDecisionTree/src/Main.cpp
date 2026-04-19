@@ -19,11 +19,13 @@ void nodeTest();
 void treeCreatorTest();
 void trainTestSplitTest();
 void nodeFileTest();
+void startToFinish();
 
 int main()
 {
 	// trainTestSplitTest();
-	nodeFileTest();
+	// nodeFileTest();
+	startToFinish();
 	return 0;
 }
 
@@ -246,6 +248,10 @@ void nodeFileTest()
 	cout << "Data:" << endl;
 	data.printDataList(0, 4);
 
+	// in reality you must load converter before predict the data using loaded node.
+	// but in this case. I use the exact same data as the data used to train the saved model.
+	// so the converted value will be the same, thus I don't have to load converter into Data List.
+
 	// train test split
 	DataList xTrain;
 	DataList xTest;
@@ -257,4 +263,39 @@ void nodeFileTest()
 	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
 	loadedRootNode->predictAll(xTest, yPred);
 	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
+}
+
+void startToFinish()
+{
+	// Read Data
+	const int N = 20;
+	vector<int> dataType = { 0, 1, 0, 1, 0, 0, 0 };
+	DataList data(N, dataType);
+	data.readCSV("data/like watching youtube.csv", "sisfsss");
+	data.printDataList();
+
+	// Split Data
+	// do train test split if you have more data.
+	DataList xTrain;
+	DataList xTest;
+	vector<float> yTrain;
+	vector<float> yTest;
+	DataManager::trainTestSplit(data, 0.5, xTrain, xTest, yTrain, yTest);
+
+	// Train
+	int labelNum = data.getUniqueAtColumn(6).size();
+	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
+	unique_ptr<Node> root = move(tree.createTree());
+
+	// Test
+	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
+	root->predictAll(xTest, yPred);
+	Utils::printArrayWithIndex(yPred);
+
+	// Evaluate
+	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
+
+	// Save
+	TreeFileManager treeFileManager("saved file/trees/likeWatchingYoutubeTree.tree");
+	treeFileManager.saveTree(*root);
 }
