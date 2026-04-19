@@ -22,6 +22,7 @@ void nodeFileTest();
 
 int main()
 {
+	// trainTestSplitTest();
 	nodeFileTest();
 	return 0;
 }
@@ -201,6 +202,10 @@ void trainTestSplitTest()
 	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
 	root->predictAll(xTest, yPred);
 	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
+
+	// save model
+	TreeFileManager treeFileManager("saved file/trees/employeeTree.tree");
+	treeFileManager.saveTree(*root);
 }
 
 void nodeFileTest()
@@ -227,7 +232,29 @@ void nodeFileTest()
 	rootNode->getRightNode()->setRightNode(make_unique<Node>(-1, 1));
 
 	// save node
-	TreeFileManager treeFileManager("saved file/trees/test.tree");
-	treeFileManager.saveTree(*rootNode);
-	// treeFileManager.loadTree();
+	TreeFileManager treeFileManager("saved file/trees/employeeTree.tree");
+	// treeFileManager.saveTree(*rootNode);
+
+	// load node
+	unique_ptr<Node> loadedRootNode = treeFileManager.loadTree();
+
+	// test loaded node
+	const int N = 3000;
+	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
+	DataList data(N, dataType);
+	data.readCSV("data/Employee.csv", "sisiissic");
+	cout << "Data:" << endl;
+	data.printDataList(0, 4);
+
+	// train test split
+	DataList xTrain;
+	DataList xTest;
+	vector<float> yTrain;
+	vector<float> yTest;
+	DataManager::trainTestSplit(data, 0.2, xTrain, xTest, yTrain, yTest);
+
+	int labelNum = data.getUniqueAtColumn(8).size();
+	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
+	loadedRootNode->predictAll(xTest, yPred);
+	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
 }

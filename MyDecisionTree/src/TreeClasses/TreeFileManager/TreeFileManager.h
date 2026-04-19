@@ -6,8 +6,8 @@ using namespace std;
 
 struct FileNodeInfo
 {
-	int id = -1;
-	int columnTargetIndex = -1;
+	// id for the node is index position from the vector
+	int targetColumnIndex = -1;
 	int leftId, rightId = -1;
 	float treshold = 0.0f;
 };
@@ -26,13 +26,15 @@ private:
 
 	int getNewId();
 
-	bool loadNode(vector<FileNodeInfo>& fileNodeInfoList, int id);
+	unique_ptr<Node> setNode(const vector<FileNodeInfo>& fileNodeInfoList, int id);
+
+	void printNodeInfo(const vector<FileNodeInfo>& fileNodeInfoList);
 
 public:
 	TreeFileManager(string path);
 
 	void saveTree(Node& root);
 
-	Node loadTree();
+	unique_ptr<Node> loadTree();
 };
 

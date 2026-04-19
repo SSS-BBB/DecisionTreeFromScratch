@@ -44,6 +44,50 @@ int TreeFileManager::getNewId()
 	return currentId;
 }
 
+unique_ptr<Node> TreeFileManager::setNode(const vector<FileNodeInfo>& fileNodeInfoList, int id)
+{
+	unique_ptr<Node> empty = make_unique<Node>(-1, -1);
+
+	if (id < 0 || id >= fileNodeInfoList.size())
+	{
+		cerr << "Unable to set node with id " << id << endl;
+		return empty;
+	}
+
+	// set node from node info using recursion
+	cout << "Setting " << id << endl;
+	
+	FileNodeInfo currentNodeInfo = fileNodeInfoList[id];
+	unique_ptr<Node> currentNode = make_unique<Node>(currentNodeInfo.targetColumnIndex, currentNodeInfo.treshold);
+	if (currentNode->isInvalidNode())
+	{
+		cerr << "Invalid Node. Unable to set node with id " << id << endl;
+		return empty;
+	}
+	else if (currentNodeInfo.targetColumnIndex < 0)
+	{
+		cout << "Leaf Node Reached at id " << id << endl;
+		return currentNode;
+	}
+
+	// inner node
+	currentNode->setLeftNode(setNode(fileNodeInfoList, currentNodeInfo.leftId));
+	currentNode->setRightNode(setNode(fileNodeInfoList, currentNodeInfo.rightId));
+	
+	return currentNode;
+}
+
+void TreeFileManager::printNodeInfo(const vector<FileNodeInfo>& fileNodeInfoList)
+{
+	int id = 0;
+	for (FileNodeInfo nodeInfo : fileNodeInfoList)
+	{
+		cout << id << "," << nodeInfo.treshold << "," << nodeInfo.targetColumnIndex << ","
+			 << nodeInfo.leftId << "," << nodeInfo.rightId << endl;
+		id++;
+	}
+}
+
 TreeFileManager::TreeFileManager(string path)
 {
 	// check invalid filepath
@@ -88,8 +132,10 @@ void TreeFileManager::saveTree(Node& root)
 	currentId = -1;
 }
 
-Node TreeFileManager::loadTree()
+unique_ptr<Node> TreeFileManager::loadTree()
 {
+	unique_ptr<Node> empty = make_unique<Node>(-1, -1);
+
 	// load node information from file
 	ifstream file(path);
 	string line = "";
@@ -100,30 +146,89 @@ Node TreeFileManager::loadTree()
 	{
 		cerr << "Invalid Load File Version." << endl;
 		cerr << "Unable to load tree from " << path << endl;
-		Node empty = Node(-1, -1);
+		return empty;
+	}
+
+	// node count
+	getline(file, line);
+	if (line != "Node Count")
+	{
+		cerr << "Invalid Tree File. No Node Count Line." << endl;
+		cerr << "Unable to load tree from " << path << endl;
+		return empty;
+	}
+	getline(file, line);
+	int nodeCount = stoi(line);
+
+	if (nodeCount <= 0)
+	{
+		cerr << "Node Count <= 0. Unable to load tree from " << path << endl;
 		return empty;
 	}
 
 	// start loading node information into a vector
 	vector<FileNodeInfo> fileNodeInfoList;
+	fileNodeInfoList.reserve(nodeCount);
+	for (int i = 0; i < nodeCount; i++)
+	{
+		FileNodeInfo currentNodeInfo;
+		fileNodeInfoList.emplace_back(currentNodeInfo);
+	}
+
+	getline(file, line);
+	if (line != "Node Info")
+	{
+		cerr << "Invalid Tree File. No Node Info Line." << endl;
+		cerr << "Unable to load tree from " << path << endl;
+		return empty;
+	}
+
 	getline(file, line);
 	while (line != "END" && !line.empty())
 	{
 		// (id,treshold,targetColumnIndex,leftID,rightID)
-		FileNodeInfo currentNodeInfo;
 
 		// id
 		int delimiterLocation = line.find(',');
-		string nodeId = line.substr(1, delimiterLocation - 1); // exclude (
+		int nodeId = stoi(line.substr(1, delimiterLocation - 1)); // exclude (
 		line = line.substr(delimiterLocation + 1);
-		cout << nodeId << endl;
-		cout << line << endl;
-		cout << "-----------" << endl;
+		cout << "Reading " << nodeId << endl;
+
+		// treshold
+		delimiterLocation = line.find(',');
+		float treshold = stof(line.substr(0, delimiterLocation));
+		line = line.substr(delimiterLocation + 1);
+
+		// targetColumnIndex
+		delimiterLocation = line.find(',');
+		int targetColumnIndex = stoi(line.substr(0, delimiterLocation));
+		line = line.substr(delimiterLocation + 1);
+
+		// leftID
+		delimiterLocation = line.find(',');
+		int leftId = stoi(line.substr(0, delimiterLocation));
+		line = line.substr(delimiterLocation + 1);
+
+		// rightID
+		int rightId = stoi(line.substr(0, line.length() - 1));
+
+		// edit information from the vector
+		if (nodeId < 0 || nodeId >= nodeCount)
+		{
+			cerr << "Invalid Node Id. Unable to read node with the id " << nodeId << endl;
+			getline(file, line);
+			continue;
+		}
+
+		fileNodeInfoList[nodeId].treshold = treshold;
+		fileNodeInfoList[nodeId].targetColumnIndex = targetColumnIndex;
+		fileNodeInfoList[nodeId].leftId = leftId;
+		fileNodeInfoList[nodeId].rightId = rightId;
 
 		// next line
 		getline(file, line);
 	}
 
-	Node empty = Node(-1, -1);
-	return empty;
+	// this is where real stuff happen
+	return setNode(fileNodeInfoList, 0);
 }
