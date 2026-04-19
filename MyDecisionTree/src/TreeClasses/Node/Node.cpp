@@ -175,3 +175,21 @@ void Node::printAllChildren(int level)
 	leftNode->printAllChildren(level + 1);
 	rightNode->printAllChildren(level + 1);
 }
+
+int Node::getChildrenCount()
+{
+	// count node's children and itself.
+
+	if (isInvalidNode())
+	{
+		cerr << "Invalid node, unable to count any more children." << endl;
+		return -1;
+	}
+
+	if (isLeafNode())
+	{
+		return 1;
+	}
+
+	return leftNode->getChildrenCount() + rightNode->getChildrenCount() + 1;
+}

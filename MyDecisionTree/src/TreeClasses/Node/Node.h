@@ -45,4 +45,6 @@ public:
 	void printInfo();
 
 	void printAllChildren(int level);
+
+	int getChildrenCount();
 };

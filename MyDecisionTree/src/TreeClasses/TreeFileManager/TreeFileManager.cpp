@@ -64,7 +64,12 @@ void TreeFileManager::saveTree(Node& root)
 	ofstream file(path);
 	file << SAVE_FILE_VERSION << endl;
 
+	// save node count
+	file << "Node Count" << endl;
+	file << root.getChildrenCount() << endl;
+
 	// start saving node
+	file << "Node Info" << endl;
 	int rootId = getNewId();
 	bool saveStatus = saveNode(file, root, rootId);
 
@@ -81,4 +86,44 @@ void TreeFileManager::saveTree(Node& root)
 
 	// reset id
 	currentId = -1;
+}
+
+Node TreeFileManager::loadTree()
+{
+	// load node information from file
+	ifstream file(path);
+	string line = "";
+
+	// check valid version
+	getline(file, line);
+	if (line != LOAD_FILE_VERSION)
+	{
+		cerr << "Invalid Load File Version." << endl;
+		cerr << "Unable to load tree from " << path << endl;
+		Node empty = Node(-1, -1);
+		return empty;
+	}
+
+	// start loading node information into a vector
+	vector<FileNodeInfo> fileNodeInfoList;
+	getline(file, line);
+	while (line != "END" && !line.empty())
+	{
+		// (id,treshold,targetColumnIndex,leftID,rightID)
+		FileNodeInfo currentNodeInfo;
+
+		// id
+		int delimiterLocation = line.find(',');
+		string nodeId = line.substr(1, delimiterLocation - 1); // exclude (
+		line = line.substr(delimiterLocation + 1);
+		cout << nodeId << endl;
+		cout << line << endl;
+		cout << "-----------" << endl;
+
+		// next line
+		getline(file, line);
+	}
+
+	Node empty = Node(-1, -1);
+	return empty;
 }

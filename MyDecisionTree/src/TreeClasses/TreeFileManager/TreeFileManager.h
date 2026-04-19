@@ -4,10 +4,19 @@
 
 using namespace std;
 
+struct FileNodeInfo
+{
+	int id = -1;
+	int columnTargetIndex = -1;
+	int leftId, rightId = -1;
+	float treshold = 0.0f;
+};
+
 class TreeFileManager
 {
 private:
 	const string SAVE_FILE_VERSION = "TREE TEST";
+	const string LOAD_FILE_VERSION = "TREE TEST";
 
 	string path = "";
 
@@ -17,10 +26,13 @@ private:
 
 	int getNewId();
 
+	bool loadNode(vector<FileNodeInfo>& fileNodeInfoList, int id);
+
 public:
 	TreeFileManager(string path);
 
 	void saveTree(Node& root);
-	// unique_ptr<Node> loadTree();
+
+	Node loadTree();
 };
 

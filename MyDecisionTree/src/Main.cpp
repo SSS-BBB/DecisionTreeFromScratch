@@ -229,4 +229,5 @@ void nodeFileTest()
 	// save node
 	TreeFileManager treeFileManager("saved file/trees/test.tree");
 	treeFileManager.saveTree(*rootNode);
+	// treeFileManager.loadTree();
 }
