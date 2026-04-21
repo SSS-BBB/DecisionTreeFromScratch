@@ -269,9 +269,9 @@ void startToFinish()
 {
 	// Read Data
 	const int N = 20;
-	vector<int> dataType = { 0, 1, 0, 1, 0, 0, 0 };
+	vector<int> dataType = { 0, 1, 0, 0, 0 };
 	DataList data(N, dataType);
-	data.readCSV("data/like watching youtube.csv", "sisfsss");
+	data.readCSV("data/long video.csv", "sisss");
 	data.printDataList();
 
 	// Split Data
@@ -283,7 +283,7 @@ void startToFinish()
 	DataManager::trainTestSplit(data, 0.5, xTrain, xTest, yTrain, yTest);
 
 	// Train
-	int labelNum = data.getUniqueAtColumn(6).size();
+	int labelNum = data.getUniqueAtColumn(4).size();
 	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
 	unique_ptr<Node> root = move(tree.createTree());
 
@@ -296,6 +296,6 @@ void startToFinish()
 	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
 
 	// Save
-	TreeFileManager treeFileManager("saved file/trees/likeWatchingYoutubeTree.tree");
+	TreeFileManager treeFileManager("saved file/trees/longVideoTree.tree");
 	treeFileManager.saveTree(*root);
 }

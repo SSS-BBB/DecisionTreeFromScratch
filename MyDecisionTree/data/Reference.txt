@@ -1,2 +1,2 @@
 Employee Dataset from: https://www.kaggle.com/datasets/tawfikelmetwally/employee-dataset
-Like Watching Youtube Dataset is a made up data created by me
+Long Video Dataset is a made up dataset created by me. It's about whether a person like watching long video or not.
