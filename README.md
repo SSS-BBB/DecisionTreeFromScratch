@@ -49,3 +49,20 @@ loadedConverter0.load("saved file/data converters/converter0.cvtr");
 newData.setDataConverter(0, loadedConverter0);
 // load all columns
 ```
+
+## Train Test Split
+Create DataList Object xTrain xTest for feature data, and create vector of float for yTrain yTest for label data
+```cpp
+DataList xTrain;
+DataList xTest;
+vector<float> yTrain;
+vector<float> yTest;
+```
+Now call train test split function from DataManager class
+```cpp
+// trainTestSplit(data, test size, xTrain, xTest, yTrain, yTest)
+DataManager::trainTestSplit(data, 0.2, xTrain, xTest, yTrain, yTest);
+```
+Split data will be store on variables you pass to the function
+
+***Note*** This function assumes your label is at the last column
