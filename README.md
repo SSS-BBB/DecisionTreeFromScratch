@@ -126,3 +126,26 @@ unique_ptr<Node> loadedRootNode = treeFileManager.loadTree();
 you'll get unique pointer of the root node of the tree as a return.
 
 ***Note*** filepath has already been passed wehn creating TreeFileManager object, no need to pass filepath into loadTree function.
+
+## What I learned from this project
+- Decision Tree Learning Algorithm
+- Reading CSV file
+- Save and Load custom file
+- Smart Pointer
+- Stack and Heap Memory Allocation
+- Confusion Matrix
+
+## References
+### Dataset
+
+Employee Dataset from: https://www.kaggle.com/datasets/tawfikelmetwally/employee-dataset
+
+Long Video Dataset is a made up dataset created by me. It's about whether a person like watching long video or not.
+
+### Decision Tree
+Decision Tree: https://en.wikipedia.org/wiki/Decision_tree_learning
+
+### Confusion Matrix
+Confusion Matrix: https://en.wikipedia.org/wiki/Confusion_matrix
+
+Accuracy, Precision, and Recall: https://en.wikipedia.org/w/index.php?title=Precision_and_recall&wprov=rarw1
