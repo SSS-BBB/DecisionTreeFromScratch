@@ -58,11 +58,31 @@ DataList xTest;
 vector<float> yTrain;
 vector<float> yTest;
 ```
-Now call train test split function from DataManager class
+Now call train test split function from DataManager class.
 ```cpp
 // trainTestSplit(data, test size, xTrain, xTest, yTrain, yTest)
 DataManager::trainTestSplit(data, 0.2, xTrain, xTest, yTrain, yTest);
 ```
-Split data will be store on variables you pass to the function
+Split data will be store on variables you pass to the function.
 
-***Note*** This function assumes your label is at the last column
+***Note*** This function assumes your label is at the last column.
+
+### Train Model (Create Tree)
+If you don't know how many unique values are in your label. You can get it using this function.
+```cpp
+// getUniqueAtColumn(column of your label).size()
+int labelNum = data.getUniqueAtColumn(8).size();
+```
+
+Create DecisionTreeCreator object
+```cpp
+// DecisionTreeCreator Constructor (address of feature data, address of label data, unique label length, maximum height (optional))
+DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
+```
+***Note*** By default maximum height will be data size (number of rows) + 1
+
+Call training function from the object.
+```cpp
+unique_ptr<Node> root = tree.createTree();
+```
+You'll get unique pointer of the root node as a return.

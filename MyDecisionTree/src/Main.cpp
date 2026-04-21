@@ -285,7 +285,7 @@ void startToFinish()
 	// Train
 	int labelNum = data.getUniqueAtColumn(4).size();
 	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
-	unique_ptr<Node> root = move(tree.createTree());
+	unique_ptr<Node> root = tree.createTree();
 
 	// Test
 	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
