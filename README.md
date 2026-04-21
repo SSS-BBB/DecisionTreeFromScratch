@@ -86,3 +86,43 @@ Call training function from the object.
 unique_ptr<Node> root = tree.createTree();
 ```
 You'll get unique pointer of the root node as a return.
+
+## Test Model
+Create vector of float to store prediction results.
+```cpp
+// create array with the same size as xTest and fill all values with -1
+// createFilledArray(size, filled value)
+vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
+```
+Predict Data from root node.
+```cpp
+// predictAll(featureData, array to store results)
+root->predictAll(xTest, yPred);
+```
+Prediction results will be stored in yPred.
+
+Evaluate results with Confusion Matrix.
+```cpp
+// confusionMatrix(predicted values, true values, unique values length)
+LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
+```
+
+![Confusion Matrix Table](/confusion%20matrix%20table.png)
+This table will be shown (In the command prompt) as well as accuracy, precision, and recall.
+
+## Save and Load Model
+Create Tree File Manager class for saving and loading model and pass filepath.
+```cpp
+TreeFileManager treeFileManager("saved file/trees/employeeTree.tree");
+```
+Call saveTree function and pass the root node of the tree.
+```cpp
+treeFileManager.saveTree(*root);
+```
+Load tree by simply calling loadTree function.
+```cpp
+unique_ptr<Node> loadedRootNode = treeFileManager.loadTree();
+```
+you'll get unique pointer of the root node of the tree as a return.
+
+***Note*** filepath has already been passed wehn creating TreeFileManager object, no need to pass filepath into loadTree function.
