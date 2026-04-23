@@ -20,10 +20,11 @@ void treeCreatorTest();
 void trainTestSplitTest();
 void nodeFileTest();
 void startToFinish();
+void otherData();
 
 int main()
 {
-	trainTestSplitTest();
+	otherData();
 
 	return 0;
 }
@@ -202,6 +203,7 @@ void trainTestSplitTest()
 
 	// create tree from training data
 	int labelNum = data.getUniqueAtColumn(8).size();
+	// DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
 	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum, 5, 20, 10);
 	unique_ptr<Node> root = move(tree.createTree());
 	
@@ -303,4 +305,41 @@ void startToFinish()
 	// Save
 	TreeFileManager treeFileManager("saved file/trees/longVideoTree.tree");
 	treeFileManager.saveTree(*root);
+}
+
+void otherData()
+{
+	// Read Data
+	const int N = 10000;
+	vector<int> dataType = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0 };
+	DataList data(N, dataType);
+	data.readCSV("data/Consumer_Shopping_Trends_2026 (6).csv", "ffffffffffffffffffffffsss");
+	data.convertAndPrint(0, 9);
+
+	
+	// Split Data
+	// do train test split if you have more data.
+	DataList xTrain;
+	DataList xTest;
+	vector<float> yTrain;
+	vector<float> yTest;
+	DataManager::trainTestSplit(data, 0.2, xTrain, xTest, yTrain, yTest);
+
+	// Train
+	int labelNum = data.getUniqueAtColumn(24).size();
+	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
+	unique_ptr<Node> root = tree.createTree();
+
+	// Test
+	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
+	root->predictAll(xTest, yPred);
+	Utils::printArrayWithIndex(yPred);
+
+	// Evaluate
+	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
+
+	// Save
+	TreeFileManager treeFileManager("saved file/trees/consumerTree.tree");
+	treeFileManager.saveTree(*root);
+	
 }
