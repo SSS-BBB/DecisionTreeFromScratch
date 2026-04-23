@@ -22,9 +22,13 @@ private:
 	int featureLength; // lengh of feature from feature data
 	int dataLength; // number of rows from feature and labels data
 	int uniqueValueLength; // how much unique values are in the label
-	int maximumHeight;
+	int maximumDepth;
+	int minSamplesSplit;
+	int minSamplesLeaf;
+
 public:
-	DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength, int p_maximumHeight);
+	DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength, 
+		int p_maximumDepth, int p_minSamplesSplit, int p_minSamplesLeaf);
 	DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength);
 
 	float calculateGini(vector<int> rowIndexes);

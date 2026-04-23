@@ -202,7 +202,7 @@ void trainTestSplitTest()
 
 	// create tree from training data
 	int labelNum = data.getUniqueAtColumn(8).size();
-	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
+	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum, 5, 20, 10);
 	unique_ptr<Node> root = move(tree.createTree());
 	
 	// predict test data

@@ -2,14 +2,17 @@
 #include <iostream>
 #include <cmath>
 
-DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength, int p_maximumHeight)
+DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength, 
+	int p_maximumDepth, int p_minSamplesSplit, int p_minSamplesLeaf)
 {
 	featureData = nullptr;
 	labels = nullptr;
 	uniqueValueLength = 0;
 	featureLength = 0;
 	dataLength = 0;
-	maximumHeight = 0;
+	maximumDepth = 0;
+	minSamplesSplit = 0;
+	minSamplesLeaf = 0;
 
 	// data length doesn't match labels length
 	if ((p_featureData->getRearRowIndex() + 1) != p_labels->size())
@@ -25,17 +28,36 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 	featureLength = featureData->getColumnNum();
 	dataLength = labels->size();
 
-	if (p_maximumHeight <= 0)
+	if (p_maximumDepth <= 0)
 	{
-		maximumHeight = dataLength + 1;
+		maximumDepth = dataLength + 1;
 	}
 	else
 	{
-		maximumHeight = p_maximumHeight;
+		maximumDepth = p_maximumDepth;
+	}
+
+	if (p_minSamplesSplit <= 0)
+	{
+		minSamplesSplit = 2;
+	}
+	else
+	{
+		minSamplesSplit = p_minSamplesSplit;
+	}
+
+	if (p_minSamplesLeaf <= 0)
+	{
+		minSamplesLeaf = 1;
+	}
+	else
+	{
+		minSamplesLeaf = p_minSamplesLeaf;
 	}
 }
 
-DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength) : DecisionTreeCreator(p_featureData, p_labels, p_uniqueValueLength, -1)
+DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength) : 
+	DecisionTreeCreator(p_featureData, p_labels, p_uniqueValueLength, -1, -1, -1)
 {
 	
 }
@@ -191,11 +213,22 @@ unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int l
 		return leafNode;
 	}
 
-	// reach maximum height
-	if (level + 1 > maximumHeight)
+	// reach maximum depth
+	if (level + 1 > maximumDepth)
 	{
 		float nodeLabel = findMajorityLabel(rowIndexes);
 		cout << "Reached Maximum Depth" << endl;
+		cout << "Node Label = " << nodeLabel << endl;
+
+		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
+		return leafNode;
+	}
+
+	// not enough samples
+	if (rowIndexes.size() < minSamplesSplit)
+	{
+		float nodeLabel = findMajorityLabel(rowIndexes);
+		cout << "Not enough samples to split" << endl;
 		cout << "Node Label = " << nodeLabel << endl;
 
 		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
@@ -212,7 +245,8 @@ unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int l
 		NodeInfo bestFeatureNodeInfo = findBestFeatureNode(currentFeatureData, rowIndexes, featureIndex);
 		// cout << "Feature: " << featureIndex << " Information Gain: " << bestFeatureNodeInfo.informationGain << endl;
 		if (bestFeatureNodeInfo.gini < currentBestNodeInfo.gini 
-			&& !bestFeatureNodeInfo.leftIndexes.empty() && !bestFeatureNodeInfo.rightIndexes.empty())
+			&& bestFeatureNodeInfo.leftIndexes.size() > minSamplesLeaf 
+			&& bestFeatureNodeInfo.rightIndexes.size() > minSamplesLeaf)
 		{
 			// update best node info
 			currentBestNodeInfo.featureIndex = bestFeatureNodeInfo.featureIndex;
