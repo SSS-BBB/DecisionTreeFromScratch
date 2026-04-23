@@ -108,7 +108,12 @@ LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
 ```
 
 ![Confusion Matrix Table](/confusion%20matrix%20table.png)
+
 This table will be shown (In the command prompt) as well as accuracy, precision, and recall.
+
+Ex.
+
+![Confusion Matrix Command Prompt](/confusion_matrix_cmd.png)
 
 ## Save and Load Model
 Create Tree File Manager class for saving and loading model and pass filepath.
@@ -135,7 +140,7 @@ you'll get unique pointer of the root node of the tree as a return.
 - Stack and Heap Memory Allocation
 - Confusion Matrix
 
-## References
+## Sources
 ### Dataset
 
 Employee Dataset from: https://www.kaggle.com/datasets/tawfikelmetwally/employee-dataset
