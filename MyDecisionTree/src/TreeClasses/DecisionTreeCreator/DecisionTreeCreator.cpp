@@ -40,23 +40,23 @@ DecisionTreeCreator::DecisionTreeCreator(DataList* p_featureData, vector<float>*
 	
 }
 
-float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
+float DecisionTreeCreator::calculateGini(vector<int> rowIndexes)
 {
 	if (labels == nullptr)
 	{
 		cerr << "Label Array is missing, unable to calculate entropy." << endl;
-		return 0.0f;
+		return INFINITY;
 	}
 
 	if (rowIndexes.size() == 0)
 	{
-		return 0.0f;
+		return INFINITY;
 	}
 
 	if (uniqueValueLength == 0)
 	{
 		cerr << "Unique Value Length is 0, unable to calculate the entropy." << endl;
-		return 0.0f;
+		return INFINITY;
 	}
 
 	vector<float> pLabels; // probability for each labels
@@ -88,19 +88,14 @@ float DecisionTreeCreator::calculateEntropy(vector<int> rowIndexes)
 		pLabels[currentLabel] += p;
 	}
 
-	// calculate entropy: O(n) where n = uniqueValueLength
-	float entropy = 0.0f;
+	// calculate gini: O(n) where n = uniqueValueLength
+	float gini = 1.0f;
 	for (int i = 0; i < uniqueValueLength; i++)
 	{
-		if (pLabels[i] == 0)
-		{
-			continue;
-		}
-
-		entropy += -(pLabels[i] * log2(pLabels[i]));
+		gini -= pLabels[i] * pLabels[i];
 	}
 
-	return entropy;
+	return gini;
 }
 
 float DecisionTreeCreator::findMajorityLabel(vector<int> rowIndexes)
@@ -178,16 +173,18 @@ unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int l
 		return errorNode;
 	}
 
-	float currentEntropy = calculateEntropy(rowIndexes);
-	cout << "Level " << level << ": Entropy = " << currentEntropy << endl;
+	DataList currentFeatureData = featureData->selectRow(rowIndexes);
+
+	float currentGini = calculateGini(rowIndexes);
+	cout << "Level " << level << ": Gini = " << currentGini << endl;
 
 	// leaf node
-	// entropy = 0
-	if (currentEntropy == 0)
+	// gini = 0
+	if (currentGini == 0)
 	{
 		// only 1 label
 		float nodeLabel = (*labels)[rowIndexes[0]];
-		cout << "Reached Entropy = 0" << endl;
+		cout << "Reached Gini = 0" << endl;
 		cout << "Node Label = " << nodeLabel << endl;
 
 		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
@@ -198,7 +195,7 @@ unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int l
 	if (level + 1 > maximumHeight)
 	{
 		float nodeLabel = findMajorityLabel(rowIndexes);
-		cout << "Reached Maximum Height" << endl;
+		cout << "Reached Maximum Depth" << endl;
 		cout << "Node Label = " << nodeLabel << endl;
 
 		unique_ptr<Node> leafNode = make_unique<Node>(-1, nodeLabel);
@@ -207,20 +204,20 @@ unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int l
 
 	// inner node
 	vector<int> empty = {};
-	NodeInfo currentBestNodeInfo = { -1, -1, -INFINITY, empty, empty };
+	NodeInfo currentBestNodeInfo = { -1, -1, INFINITY, empty, empty };
 
 	// iterate through each features
 	for (int featureIndex = 0; featureIndex < featureLength; featureIndex++)
 	{
-		NodeInfo bestFeatureNodeInfo = findBestFeatureNode(rowIndexes, featureIndex, currentEntropy);
+		NodeInfo bestFeatureNodeInfo = findBestFeatureNode(currentFeatureData, rowIndexes, featureIndex);
 		// cout << "Feature: " << featureIndex << " Information Gain: " << bestFeatureNodeInfo.informationGain << endl;
-		if (bestFeatureNodeInfo.informationGain > currentBestNodeInfo.informationGain 
+		if (bestFeatureNodeInfo.gini < currentBestNodeInfo.gini 
 			&& !bestFeatureNodeInfo.leftIndexes.empty() && !bestFeatureNodeInfo.rightIndexes.empty())
 		{
 			// update best node info
 			currentBestNodeInfo.featureIndex = bestFeatureNodeInfo.featureIndex;
 			currentBestNodeInfo.value = bestFeatureNodeInfo.value;
-			currentBestNodeInfo.informationGain = bestFeatureNodeInfo.informationGain;
+			currentBestNodeInfo.gini = bestFeatureNodeInfo.gini;
 			currentBestNodeInfo.leftIndexes = bestFeatureNodeInfo.leftIndexes;
 			currentBestNodeInfo.rightIndexes = bestFeatureNodeInfo.rightIndexes;
 		}
@@ -259,36 +256,35 @@ unique_ptr<Node> DecisionTreeCreator::createTree()
 	return bestRoot;
 }
 
-NodeInfo DecisionTreeCreator::findBestFeatureNode(vector<int> rowIndexes, int featureIndex, float currentEntropy)
+NodeInfo DecisionTreeCreator::findBestFeatureNode(DataList& currentFeatureData, vector<int> rowIndexes, int featureIndex)
 {
+	vector<int> empty = {};
+	NodeInfo nullNode = { -1, -1, INFINITY, empty, empty };
+
 	if (rowIndexes.size() == 0)
 	{
 		cerr << "No data to find the best feature node." << endl;
-		vector<int> empty = {};
-		NodeInfo nullNode = {-1, -1, -INFINITY, empty, empty};
 		return nullNode;
 	}
 
 	if (featureIndex < 0 || featureIndex >= featureLength)
 	{
 		cerr << "feature index out of bounds, unable to find best node for feature " << featureIndex << endl;
-		vector<int> empty = {};
-		NodeInfo nullNode = { -1, -1, -INFINITY, empty, empty };
 		return nullNode;
 	}
+
 
 	// find best node for specific feature
 	// iterate through every unique values of this feature to find the best value node for this feature
 	// the best value node is the node with the most information gain
-	set<float> featureUniqueValues = featureData->getUniqueAtColumn(featureIndex);
-	
-	vector<int> empty = {};
-	NodeInfo bestNodeInfo = { featureIndex, -1, -INFINITY, empty, empty };
+	set<float> featureTresholdSet = currentFeatureData.getTresholdsAtColumn(featureIndex);
 
-	for (float unique : featureUniqueValues)
+	NodeInfo bestNodeInfo = { featureIndex, -1, INFINITY, empty, empty };
+
+	for (float treshold : featureTresholdSet)
 	{
 		// create node for this unique value
-		Node currentNode(featureIndex, unique);
+		Node currentNode(featureIndex, treshold);
 
 		// data split from this node
 		vector<int> leftIndexes = {};
@@ -297,20 +293,18 @@ NodeInfo DecisionTreeCreator::findBestFeatureNode(vector<int> rowIndexes, int fe
 
 		// calculate information gain
 		float wLeft = ((float) leftIndexes.size()) / rowIndexes.size();
-		float entropyLeft = calculateEntropy(leftIndexes);
+		float giniLeft = calculateGini(leftIndexes);
 
 		float wRight = ((float) rightIndexes.size()) / rowIndexes.size();
-		float entropyRight = calculateEntropy(rightIndexes);
+		float giniRight = calculateGini(rightIndexes);
 
-		float entropySum = wLeft*entropyLeft + wRight*entropyRight;
-
-		float currentInformationGain = currentEntropy - entropySum;
+		float giniWeightedSum = wLeft*giniLeft + wRight*giniRight;
 
 		// check max information gain
-		if (currentInformationGain > bestNodeInfo.informationGain && !leftIndexes.empty() && !rightIndexes.empty())
+		if (giniWeightedSum < bestNodeInfo.gini && !leftIndexes.empty() && !rightIndexes.empty())
 		{
-			bestNodeInfo.informationGain = currentInformationGain;
-			bestNodeInfo.value = unique;
+			bestNodeInfo.gini = giniWeightedSum;
+			bestNodeInfo.value = treshold;
 			bestNodeInfo.leftIndexes = leftIndexes;
 			bestNodeInfo.rightIndexes = rightIndexes;
 		}

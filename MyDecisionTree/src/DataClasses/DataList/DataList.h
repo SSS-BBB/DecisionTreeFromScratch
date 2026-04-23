@@ -63,6 +63,8 @@ public:
 	int getColumnDataTypeAt(int columnIndex);
 
 	set<float> getUniqueAtColumn(int columnIndex);
+	set<float> getMidpointsAtColumn(int columnIndex);
+	set<float> getTresholdsAtColumn(int columnIndex);
 
 	vector<float> getColumn(int columnIndex);
 

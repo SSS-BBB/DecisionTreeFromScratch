@@ -467,6 +467,41 @@ set<float> DataList::getUniqueAtColumn(int columnIndex)
 	return uniqueValueColumns[columnIndex];
 }
 
+set<float> DataList::getMidpointsAtColumn(int columnIndex)
+{
+	if (columnIndex < 0 || columnIndex >= columnNum)
+	{
+		cerr << "index out of bounds, unable to get midpoints at column " << columnIndex << endl;
+		set<float> emptyset = {};
+		return emptyset;
+	}
+
+	if (columnDataTypes[columnIndex] != 1)
+	{
+		cout << "Warning: getting midpoints at non-numerical columns. set will be empty." << endl;
+	}
+
+	return midpointColumns[columnIndex];
+}
+
+set<float> DataList::getTresholdsAtColumn(int columnIndex)
+{
+	// return uniques if column is categorical, and return midpoints if column is numerical
+	if (columnIndex < 0 || columnIndex >= columnNum)
+	{
+		cerr << "index out of bounds, unable to get treshold at column " << columnIndex << endl;
+		set<float> emptyset = {};
+		return emptyset;
+	}
+
+	if (columnDataTypes[columnIndex] == 1)
+	{
+		return getMidpointsAtColumn(columnIndex);
+	}
+
+	return getUniqueAtColumn(columnIndex);
+}
+
 vector<float> DataList::getColumn(int columnIndex)
 {
 	// get specific column as a vector

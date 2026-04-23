@@ -9,7 +9,7 @@ struct NodeInfo
 {
 	int featureIndex;
 	float value;
-	float informationGain;
+	float gini;
 	vector<int> leftIndexes, rightIndexes;
 };
 
@@ -27,11 +27,11 @@ public:
 	DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength, int p_maximumHeight);
 	DecisionTreeCreator(DataList* p_featureData, vector<float>* p_labels, int p_uniqueValueLength);
 
-	float calculateEntropy(vector<int> rowIndexes);
+	float calculateGini(vector<int> rowIndexes);
 
 	float findMajorityLabel(vector<int> rowIndexes);
 
 	unique_ptr<Node> findBestNode(vector<int> rowIndexes, int level);
 	unique_ptr<Node> createTree();
-	NodeInfo findBestFeatureNode(vector<int> rowIndexes, int featureIndex, float currentEntropy);
+	NodeInfo findBestFeatureNode(DataList& currentFeatureData, vector<int> rowIndexes, int featureIndex);
 };

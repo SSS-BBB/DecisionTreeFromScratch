@@ -23,10 +23,8 @@ void startToFinish();
 
 int main()
 {
-	// trainTestSplitTest();
-	// nodeFileTest();
-	// startToFinish();
-	readCSVTest();
+	trainTestSplitTest();
+
 	return 0;
 }
 
@@ -136,7 +134,7 @@ void nodeTest()
 void treeCreatorTest()
 {
 	// Data
-	const int N = 2026;
+	const int N = 40;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
 	dataList.readCSV("data/Employee.csv", "sisiissic"); // make labels column c to convert labels data to 0-n
@@ -149,7 +147,7 @@ void treeCreatorTest()
 
 	// Tree
 	DecisionTreeCreator tree(&featureData, &labels, labelUniqueValues.size());
-	unique_ptr<Node> root = move(tree.createTree());
+	unique_ptr<Node> root = tree.createTree();
 	// tree.printNodeMemory();
 	// root.printAllChildren(0);
 
@@ -160,6 +158,10 @@ void treeCreatorTest()
 
 	// Test Results
 	vector<vector<float>> confusionMatrix = LabelEvaluator::confusionMatrix(labelTest, labels, labelUniqueValues.size());
+
+	// Save Model
+	TreeFileManager treeFileManager("saved file/trees/giniTest.tree");
+	treeFileManager.saveTree(*root);
 }
 
 void trainTestSplitTest()
