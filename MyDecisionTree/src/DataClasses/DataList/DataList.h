@@ -1,5 +1,4 @@
 #pragma once
-// #include "../Data/Data.h"
 #include "../DataConverter/DataConverter.h"
 #include <vector>
 #include <memory>
@@ -30,6 +29,9 @@ private:
 	// unique values for each columns
 	vector<set<float>> uniqueValueColumns;
 
+	// midpoint value for numerical columns
+	vector<set<float>> midpointColumns;
+
 public:
 	DataList(int p_rowNum, vector<int> p_columnDataTypes);
 	DataList();
@@ -53,6 +55,7 @@ public:
 	float getDataAt(int rowIndex, int columnIndex);
 	DataList sliceColumn(int startIndex, int endIndex);
 	DataList sliceRow(int startIndex, int endIndex);
+	DataList selectRow(vector<int> selectRowIndex);
 
 	void saveConverterAt(int index, string filepath);
 	void setDataConverter(int index, DataConverter &newDataConverter);
@@ -62,4 +65,6 @@ public:
 	set<float> getUniqueAtColumn(int columnIndex);
 
 	vector<float> getColumn(int columnIndex);
+
+	void setMidpoint();
 };

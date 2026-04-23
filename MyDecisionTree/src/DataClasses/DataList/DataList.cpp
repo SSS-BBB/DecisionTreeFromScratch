@@ -157,6 +157,16 @@ void DataList::printUniqueData()
 		}
 		cout << endl;
 	}
+
+	cout << "Midpoints" << endl;
+	for (set<float> midpointSet : midpointColumns)
+	{
+		for (float midvalue : midpointSet)
+		{
+			cout << midvalue << " ";
+		}
+		cout << endl;
+	}
 }
 
 void DataList::convertAndPrint()
@@ -279,6 +289,8 @@ void DataList::readCSV(string filePath, string columnsVariableType)
 		cout << row + 1 << "/" << rowNum << endl;
 	}
 	
+	// finished adding data
+	setMidpoint();
 }
 
 float DataList::getDataAt(int rowIndex, int columnIndex)
@@ -343,6 +355,8 @@ DataList DataList::sliceColumn(int startIndex, int endIndex)
 		dropedDataList.addRow(currentSlicedColumn);
 	}
 
+	dropedDataList.setMidpoint();
+
 	return dropedDataList;
 }
 
@@ -350,14 +364,14 @@ DataList DataList::sliceRow(int startIndex, int endIndex)
 {
 	if (dataArray == nullptr)
 	{
-		cerr << "Data Array is missing, unable to slice the rows." << endl;
+		cerr << "Data Array is missing, unable to slice rows." << endl;
 		return move(*this);
 	}
 
 	int n = endIndex - startIndex + 1; // row length after sliced
 	if (n > rowNum || n <= 0 || startIndex >= rowNum || endIndex >= rowNum)
 	{
-		cerr << "index out of bounds, unable to slice the rows." << endl;
+		cerr << "index out of bounds, unable to slice rows." << endl;
 		return move(*this);
 	}
 
@@ -369,12 +383,43 @@ DataList DataList::sliceRow(int startIndex, int endIndex)
 		slicedDataList.setDataConverter(i, dataConverter[i]);
 	}
 
+	// add data
 	for (int i = startIndex; i <= endIndex; i++)
 	{
 		slicedDataList.addRow((*dataArray)[i]);
 	}
 
+	slicedDataList.setMidpoint();
+
 	return slicedDataList;
+}
+
+DataList DataList::selectRow(vector<int> selectRowIndex)
+{
+	// get data for some indexes
+	if (dataArray == nullptr)
+	{
+		cerr << "Data Array is missing, unable to select rows." << endl;
+		return move(*this);
+	}
+
+	DataList selectedData(selectRowIndex.size(), columnDataTypes);
+
+	// add converter
+	for (int i = 0; i < columnNum; i++)
+	{
+		selectedData.setDataConverter(i, dataConverter[i]);
+	}
+
+	// add data
+	for (int i : selectRowIndex)
+	{
+		selectedData.addRow((*dataArray)[i]);
+	}
+
+	selectedData.setMidpoint();
+
+	return selectedData;
 }
 
 void DataList::saveConverterAt(int index, string filepath)
@@ -441,5 +486,26 @@ vector<float> DataList::getColumn(int columnIndex)
 	}
 
 	return columnData;
+}
+
+void DataList::setMidpoint()
+{
+	// set midpoint value from unique values for numerical columns
+	for (int i = 0; i < columnDataTypes.size(); i++)
+	{
+		set<float> midpoints;
+		if (columnDataTypes[i] == 1)
+		{
+			// convert unique values set to vector
+			vector<float> uniqueNums(uniqueValueColumns[i].begin(), uniqueValueColumns[i].end());
+
+			for (int j = 0; j < uniqueNums.size() - 1; j++)
+			{
+				float midvalue = (uniqueNums[j] + uniqueNums[j + 1]) / 2.0f;
+				midpoints.insert(midvalue);
+			}
+		}
+		midpointColumns.emplace_back(midpoints);
+	}
 }
 

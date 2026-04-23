@@ -25,7 +25,8 @@ int main()
 {
 	// trainTestSplitTest();
 	// nodeFileTest();
-	startToFinish();
+	// startToFinish();
+	readCSVTest();
 	return 0;
 }
 
@@ -68,23 +69,25 @@ void dummyDataTest()
 
 void readCSVTest()
 {
-	const int N = 1000;
+	const int N = 20;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList dataList(N, dataType);
 	dataList.readCSV("data/Employee.csv", "sisiissic");
-	
-	DataList slicedDataList = dataList.sliceColumn(2, 5).sliceRow(500, 600);
 
-	dataList.convertAndPrint(0, 4);
+	vector<int> selectRowIndex = { 2, 5, 8, 1, 0, 7 };
+	DataList selectedData = dataList.selectRow(selectRowIndex);
+
+	
+	dataList.printDataList();
+	cout << "--------------" << endl;
 	dataList.printUniqueData();
-	cout << "--------------" << endl;
-	slicedDataList.convertAndPrint(0, 4);
-	cout << "--------------" << endl;
-	slicedDataList.printUniqueData();
-	
 
-	// save data converter
-	// dataList.saveConverterAt(1, "saved file/data converters/converter1.cvtr");
+	cout << "------------------------------------" << endl;
+
+	selectedData.printDataList();
+	cout << "--------------" << endl;
+	selectedData.printUniqueData();
+	
 }
 
 void nodeTest()
