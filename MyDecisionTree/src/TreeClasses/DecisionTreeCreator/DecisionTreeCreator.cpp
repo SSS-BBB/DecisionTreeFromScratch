@@ -245,8 +245,8 @@ unique_ptr<Node> DecisionTreeCreator::findBestNode(vector<int> rowIndexes, int l
 		NodeInfo bestFeatureNodeInfo = findBestFeatureNode(currentFeatureData, rowIndexes, featureIndex);
 		// cout << "Feature: " << featureIndex << " Information Gain: " << bestFeatureNodeInfo.informationGain << endl;
 		if (bestFeatureNodeInfo.gini < currentBestNodeInfo.gini 
-			&& bestFeatureNodeInfo.leftIndexes.size() > minSamplesLeaf 
-			&& bestFeatureNodeInfo.rightIndexes.size() > minSamplesLeaf)
+			&& bestFeatureNodeInfo.leftIndexes.size() >= minSamplesLeaf 
+			&& bestFeatureNodeInfo.rightIndexes.size() >= minSamplesLeaf)
 		{
 			// update best node info
 			currentBestNodeInfo.featureIndex = bestFeatureNodeInfo.featureIndex;
