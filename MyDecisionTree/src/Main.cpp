@@ -24,7 +24,8 @@ void otherData();
 
 int main()
 {
-	otherData();
+	startToFinish();
+	// otherData();
 
 	return 0;
 }
@@ -291,20 +292,28 @@ void startToFinish()
 
 	// Train
 	int labelNum = data.getUniqueAtColumn(4).size();
+	/*
 	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
 	unique_ptr<Node> root = tree.createTree();
+	*/
+
+	// Load
+	TreeFileManager treeFileManager("saved file/trees/longVideoTree.tree");
+	unique_ptr<Node> root = treeFileManager.loadTree();
 
 	// Test
-	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
-	root->predictAll(xTest, yPred);
+	vector<float> yPred = Utils::createFilledArray(xTrain.getRowNum(), -1);
+	root->predictAll(xTrain, yPred);
 	Utils::printArrayWithIndex(yPred);
 
 	// Evaluate
-	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
+	LabelEvaluator::confusionMatrix(yPred, yTrain, labelNum);
 
 	// Save
+	/*
 	TreeFileManager treeFileManager("saved file/trees/longVideoTree.tree");
 	treeFileManager.saveTree(*root);
+	*/
 }
 
 void otherData()
@@ -325,21 +334,30 @@ void otherData()
 	vector<float> yTest;
 	DataManager::trainTestSplit(data, 0.2, xTrain, xTest, yTrain, yTest);
 
-	// Train
 	int labelNum = data.getUniqueAtColumn(24).size();
+
+	// Load Tree
+	TreeFileManager treeFileManager("saved file/trees/consumerTree.tree");
+	unique_ptr<Node> root = treeFileManager.loadTree();
+
+	/*
+	// Train
 	DecisionTreeCreator tree(&xTrain, &yTrain, labelNum);
 	unique_ptr<Node> root = tree.createTree();
+	*/
 
 	// Test
 	vector<float> yPred = Utils::createFilledArray(xTest.getRowNum(), -1);
 	root->predictAll(xTest, yPred);
-	Utils::printArrayWithIndex(yPred);
+	// Utils::printArrayWithIndex(yPred);
 
 	// Evaluate
 	LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
 
+	/*
 	// Save
 	TreeFileManager treeFileManager("saved file/trees/consumerTree.tree");
 	treeFileManager.saveTree(*root);
+	*/
 	
 }
