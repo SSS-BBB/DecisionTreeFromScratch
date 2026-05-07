@@ -1,4 +1,9 @@
 # Decision Tree From Scratch
+I've created a Decision Tree Model using c++ without any machine learning library, trained the model with employee dataset, tested, and evaluated the model.
+
+I also trained a Decision Tree Model using Scikit-learn library in python notebook, tested, and evaluated the model.
+
+Then compared evaluation of the Decision Tree I created from scratch and evaluation of the Decision Tree from Scikit-learn library.
 
 ## Read Data
 Create a DataList object to store the data
