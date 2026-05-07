@@ -107,13 +107,9 @@ Evaluate results with Confusion Matrix.
 LabelEvaluator::confusionMatrix(yPred, yTest, labelNum);
 ```
 
-![Confusion Matrix Table](/confusion%20matrix%20table.png)
+![Confusion Matrix Table](/markdown_images/confusion%20matrix%20table.png)
 
 This table will be shown (In the command prompt) as well as accuracy, precision, and recall.
-
-Ex.
-
-![Confusion Matrix Command Prompt](/confusion_matrix_cmd.png)
 
 ## Save and Load Model
 Create Tree File Manager class for saving and loading model and pass filepath.
@@ -132,7 +128,18 @@ you'll get unique pointer of the root node of the tree as a return.
 
 ***Note*** filepath has already been passed wehn creating TreeFileManager object, no need to pass filepath into loadTree function.
 
-## What I learned from this project
+## My Decision Tree From Scratch and Scikit-learn's Decision Tree comparison using Employee Dataset
+My Decision Tree Evaluation
+
+![My Decision tree Confusion Matrix](/markdown_images/cpp_confusion_matrix.png)
+
+Scikit-learn's Decision Tree Evaluation
+
+![Scikit-learn's Decision tree Confusion Matrix](/markdown_images/scikit_learn_confusion_matrix.png)
+
+![Scikit-learn's Decision tree Classification report](/markdown_images/scikit_learn_classification_report.png)
+
+## Key Knowledges
 - Decision Tree Learning Algorithm
 - Reading CSV file
 - Save and Load custom file
@@ -144,6 +151,8 @@ you'll get unique pointer of the root node of the tree as a return.
 ### Dataset
 
 Employee Dataset from: https://www.kaggle.com/datasets/tawfikelmetwally/employee-dataset
+
+Consumer Shopping Trends 2026 Dataset from: https://www.kaggle.com/datasets/sohaibdevv/consumer-shopping-behavior-and-preference-study-2026
 
 Long Video Dataset is a made up dataset created by me. It's about whether a person like watching long video or not.
 

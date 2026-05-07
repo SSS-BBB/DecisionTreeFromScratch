@@ -24,8 +24,7 @@ void otherData();
 
 int main()
 {
-	startToFinish();
-	// otherData();
+	trainTestSplitTest();
 
 	return 0;
 }
@@ -169,7 +168,7 @@ void treeCreatorTest()
 void trainTestSplitTest()
 {
 	// get data from file
-	const int N = 3000;
+	const int N = 4653;
 	vector<int> dataType = { 0, 1, 0, 0, 1, 0, 0, 1, 0 };
 	DataList data(N, dataType);
 	data.readCSV("data/Employee.csv", "sisiissic");

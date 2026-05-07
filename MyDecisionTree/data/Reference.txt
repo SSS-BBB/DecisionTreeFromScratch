@@ -1,2 +1,3 @@
 Employee Dataset from: https://www.kaggle.com/datasets/tawfikelmetwally/employee-dataset
+Consumer Shopping Trends 2026 Dataset from: https://www.kaggle.com/datasets/sohaibdevv/consumer-shopping-behavior-and-preference-study-2026
 Long Video Dataset is a made up dataset created by me. It's about whether a person like watching long video or not.
